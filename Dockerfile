@@ -12,7 +12,7 @@ RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo
 
-RUN cd /tmp && wget https://mullvad.net/da/download/app/rpm/latest -O mullvad.rpm
+# RUN cd /tmp && wget https://mullvad.net/da/download/app/rpm/latest -O mullvad.rpm
 
 RUN rpm-ostree override remove firefox firefox-langpacks && \
 #rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-bore-lto && \
