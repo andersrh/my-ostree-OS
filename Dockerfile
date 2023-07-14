@@ -9,6 +9,6 @@ ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN rpm-ostree override remove firefox firefox-langpacks && \
-rpm-ostree install distrobox fish && \ 
+rpm-ostree install clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \ 
 rpm-ostree cleanup -m && \
 ostree container commit
