@@ -9,6 +9,6 @@ ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN rpm-ostree override remove firefox firefox-langpacks && \
-rpm-ostree install distrobox
-
-RUN ostree container commit
+rpm-ostree install distrobox fish && \ 
+rpm-ostree cleanup -m && \
+ostree container commit
