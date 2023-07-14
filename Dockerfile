@@ -19,4 +19,4 @@ RUN rpm-ostree override remove firefox firefox-langpacks && \
 rpm-ostree install ksshaskpass gnome-keyring uksmd clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \ 
 rpm-ostree cleanup -m && \
 rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
-ostree container commit
+ostree container commit 
