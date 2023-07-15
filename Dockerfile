@@ -19,3 +19,8 @@ rpm-ostree install ksshaskpass uksmd clang clang-devel cronie distrobox fish fla
 rpm-ostree cleanup -m && \
 rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
+
+# remove Okular from base image
+RUN rpm-ostree override remove okular && \
+rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+ostree container commit
