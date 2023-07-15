@@ -22,5 +22,6 @@ ostree container commit
 
 # remove Okular from base image
 RUN rpm-ostree override remove okular && \
+rpm-ostree cleanup -m && \
 rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
