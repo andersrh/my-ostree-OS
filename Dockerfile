@@ -16,9 +16,6 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 RUN rpm-ostree override remove firefox firefox-langpacks okular && \
 rpm-ostree install ksshaskpass uksmd clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid
 
-#RUN mv /root /root_ && mkdir /root && rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-bore-lto && rm -rf /root && mv /root_ /root && \
-#rm -rf /boot/*
-
 RUN mkdir /var/opt && cd /tmp && wget https://mullvad.net/da/download/app/rpm/latest -O mullvad.rpm && rpm-ostree install mullvad.rpm
 RUN mv "/opt/Mullvad VPN" /usr/lib/opt/
 
