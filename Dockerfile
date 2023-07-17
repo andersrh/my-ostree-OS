@@ -16,11 +16,11 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 RUN rpm-ostree override remove firefox firefox-langpacks okular && \
 rpm-ostree install ksshaskpass uksmd clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid
 
-RUN mkdir /var/opt && cd /tmp && wget https://mullvad.net/da/download/app/rpm/latest -O mullvad.rpm && rpm-ostree install mullvad.rpm
-RUN mv "/opt/Mullvad VPN" /usr/lib/opt/
+RUN mkdir /var/opt && cd /tmp && wget https://mullvad.net/da/download/app/rpm/latest -O mullvad.rpm && rpm-ostree install mullvad.rpm && \
+mv "/opt/Mullvad VPN" /usr/lib/opt/
 
 # install ffmpeg-free
-RUN rpm-ostree install ffmpeg-free
+RUN rpm-ostree install ffmpeg-free && setcap cap_sys_admin+ep /usr/bin/ffmpeg
 
 RUN rpm-ostree cleanup -m && \
 rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
