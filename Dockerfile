@@ -19,9 +19,6 @@ rpm-ostree install ksshaskpass uksmd clang clang-devel cronie distrobox fish fla
 RUN mkdir /var/opt && cd /tmp && wget https://mullvad.net/da/download/app/rpm/latest -O mullvad.rpm && rpm-ostree install mullvad.rpm && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/
 
-# install ffmpeg-free
-RUN rpm-ostree install ffmpeg-free && setcap cap_sys_admin+ep /usr/bin/ffmpeg
-
 RUN rpm-ostree cleanup -m && \
 rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
