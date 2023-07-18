@@ -19,6 +19,17 @@ rpm-ostree install ksshaskpass uksmd clang clang-devel cronie distrobox fish fla
 RUN mkdir /var/opt && cd /tmp && wget https://mullvad.net/da/download/app/rpm/latest -O mullvad.rpm && rpm-ostree install mullvad.rpm && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/
 
+# install gpu screen recorder
+COPY gpu-screen-recorder /tmp/
+RUN cd /tmp/gpu-screen-recorder && \
+./install.sh && \
+setcap cap_sys_admin+ep '/usr/bin/gsr-kms-server'
+
+# install RPM-fusion
+RUN rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+# install nonfree codecs
+RUN rpm-ostree install libavcodec-freeworld
+
 RUN rpm-ostree cleanup -m && \
 rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
