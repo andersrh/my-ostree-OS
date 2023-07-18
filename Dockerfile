@@ -35,6 +35,11 @@ rpm-ostree install ffmpeg ffmpeg-libs intel-media-driver pipewire-codec-aptx lib
 # install Pulseaudio utilities
 RUN rpm-ostree install pulseaudio-utils
 
+# install gpu screen recorder gtk
+COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
+RUN cd /tmp/gpu-screen-recorder-gtk && \
+./install.sh
+
 RUN rpm-ostree cleanup -m && \
 rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
