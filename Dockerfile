@@ -20,7 +20,7 @@ RUN mkdir /var/opt && cd /tmp && wget https://mullvad.net/da/download/app/rpm/la
 mv "/opt/Mullvad VPN" /usr/lib/opt/
 
 # install gpu screen recorder
-COPY gpu-screen-recorder /tmp/
+COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
 RUN cd /tmp/gpu-screen-recorder && \
 ./install.sh && \
 setcap cap_sys_admin+ep '/usr/bin/gsr-kms-server'
