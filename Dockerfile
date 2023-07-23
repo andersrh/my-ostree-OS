@@ -40,6 +40,9 @@ COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 RUN cd /tmp/gpu-screen-recorder-gtk && \
 ./install.sh
 
+# install Kata containers
+RUN rpm-ostree install kata-containers
+
 RUN rpm-ostree cleanup -m && \
 rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
