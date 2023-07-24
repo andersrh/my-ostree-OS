@@ -43,6 +43,9 @@ RUN cd /tmp/gpu-screen-recorder-gtk && \
 # install Kata containers
 RUN rpm-ostree install kata-containers
 
+# add bore-sysctl
+RUN rpm-ostree install bore-sysctl
+
 RUN rpm-ostree cleanup -m && \
 rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
