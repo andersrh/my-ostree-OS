@@ -8,12 +8,16 @@ FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
+# copy gpu screen recorder and gpu screen recorder gtk
+COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
+COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
+
+
 RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo
-
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp \
 # remove Okular and Firefox from base image
-RUN rpm-ostree override remove firefox firefox-langpacks okular && \
+rpm-ostree override remove firefox firefox-langpacks okular && \
 rpm-ostree install ksshaskpass uksmd clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
 # install RPM-fusion
 rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
@@ -31,17 +35,12 @@ rpm-ostree install hfsplus-tools && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
-# Clear cache
-rpm-ostree cleanup -m
-
 # install gpu screen recorder and gpu screen recorder gtk
-COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
-COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
-RUN cd /tmp/gpu-screen-recorder && \
+cd /tmp/gpu-screen-recorder && \
 ./install.sh && \
 setcap cap_sys_admin+ep '/usr/bin/gsr-kms-server' && \
 cd /tmp/gpu-screen-recorder-gtk && \
-./install.sh
-
-RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+./install.sh && \
+# Clear cache, /var and /tmp and commit ostree
+rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
