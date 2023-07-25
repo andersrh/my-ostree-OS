@@ -27,22 +27,21 @@ rpm-ostree install kata-containers && \
 # add bore-sysctl
 rpm-ostree install bore-sysctl && \
 # install Apple HFS+ tools
-rpm-ostree install hfsplus-tools
+rpm-ostree install hfsplus-tools && \
+# install Mullvad VPN
+mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
+mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
+# Clear cache
+rpm-ostree cleanup -m
 
-RUN mkdir /var/opt && cd /tmp && wget https://mullvad.net/da/download/app/rpm/latest -O mullvad.rpm && rpm-ostree install mullvad.rpm && \
-mv "/opt/Mullvad VPN" /usr/lib/opt/ && rm -f mullvad.rpm
-
-# install gpu screen recorder
+# install gpu screen recorder and gpu screen recorder gtk
 COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
+COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 RUN cd /tmp/gpu-screen-recorder && \
 ./install.sh && \
-setcap cap_sys_admin+ep '/usr/bin/gsr-kms-server'
-
-# install gpu screen recorder gtk
-COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
-RUN cd /tmp/gpu-screen-recorder-gtk && \
+setcap cap_sys_admin+ep '/usr/bin/gsr-kms-server' && \
+cd /tmp/gpu-screen-recorder-gtk && \
 ./install.sh
 
-RUN rpm-ostree cleanup -m && \
-rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
