@@ -12,5 +12,3 @@ install -Dm644 "gpu-screen-recorder-gtk.desktop" "/usr/share/applications/com.de
 install -Dm644 com.dec05eba.gpu_screen_recorder.appdata.xml "/usr/share/metainfo/com.dec05eba.gpu_screen_recorder.appdata.xml"
 install -Dm644 icons/hicolor/64x64/apps/com.dec05eba.gpu_screen_recorder.png "/usr/share/icons/hicolor/64x64/apps/com.dec05eba.gpu_screen_recorder.png"
 install -Dm644 icons/hicolor/128x128/apps/com.dec05eba.gpu_screen_recorder.png "/usr/share/icons/hicolor/128x128/apps/com.dec05eba.gpu_screen_recorder.png"
-
-echo "Successfully installed gpu-screen-recorder-gtk"
