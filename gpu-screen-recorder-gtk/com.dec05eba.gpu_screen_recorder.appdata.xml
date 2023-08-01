@@ -18,15 +18,15 @@
 
     <description>
         <p>
-            This is a screen recorder that has minimal impact on system performance by recording a window using the GPU only, similar to shadowplay on windows. This is the fastest screen recording tool for Linux. This screen recorder works with both X11 and Wayland.
+            This is a screen recorder that has minimal impact on system performance by recording a monitor using the GPU only, similar to shadowplay on windows. This is the fastest screen recording tool for Linux. This screen recorder works with both X11 and Wayland.
         </p>
         <p>
             This screen recorder can be used for recording your desktop offline, for live streaming and for nvidia-like instant replay, where only the last few seconds are saved.
         </p>
         <p>
-            There are some restrictions when recording on AMD/Intel. Videos created on AMD/Intel are in variable framerate format. Very out of date video players might have an issue playing such videos. I recommend using MPV or a browser to play such videos, otherwise you might experience stuttering in the video.
+            There are some restrictions when recording on AMD/Intel or Wayland. Videos created on AMD/Intel/Wayland are in variable framerate format. Very out of date video players might have an issue playing such videos. I recommend using MPV or a browser to play such videos, otherwise you might experience stuttering in the video.
             Recording a monitor requires (restricted) root access which means that you have to install GPU Screen Recorder system-wide: flatpak install flathub --system com.dec05eba.gpu_screen_recorder
-            and pkexec needs to be installed on the system. This is also the case when using wayland on Nvidia.
+            and pkexec needs to be installed on the system and a polkit agent needs to be running.
             Some distros such as manjaro disable hardware accelerated H264/HEVC which means GPU Screen Recorder wont work on AMD/Intel and you have to either switch to another distro or install mesa from source (or install mesa-git for example).
         </p>
     </description>
@@ -44,6 +44,41 @@
     </screenshots>
 
     <releases>
+        <release version="3.1.5" date="2023-07-25">
+            <description>
+                <p>AMD/Intel: Fix too dark video in the flatpak version.</p>
+            </description>
+        </release>
+        <release version="3.1.4" date="2023-07-23">
+            <description>
+                <p>AMD/Intel: Better color accuracy.</p>
+            </description>
+        </release>
+        <release version="3.1.3" date="2023-07-22">
+            <description>
+                <p>Fix capture on wlroots based wayland compositors. Fix cursor offset in amd/intel capture.</p>
+            </description>
+        </release>
+        <release version="3.1.2" date="2023-07-22">
+            <description>
+                <p>Support cursor capture on AMD/Intel on Wayland. Attempt to fix multi monitor offset capture in some cases.</p>
+            </description>
+        </release>
+        <release version="3.1.1" date="2023-07-21">
+            <description>
+                <p>Support cursor capture on AMD/Intel on Wayland.</p>
+            </description>
+        </release>
+        <release version="3.1.0" date="2023-07-21">
+            <description>
+            <ul>
+                <li>Support wlroots capture when possible (no kms root access required)</li>
+                <li>Make window capture a bit more robust</li>
+                <li>Fix possible lag on recording start on AMD/Intel</li>
+                <li>Make capture on AMD/Intel possible without Xwayland</li>
+            </ul>
+            </description>
+        </release>
         <release version="3.0.0" date="2023-07-18">
             <description>
                 <p>Experimental wayland support on AMD/Intel/NVIDIA. Hotkeys not supported.</p>
