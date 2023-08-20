@@ -7,7 +7,7 @@ name: Docker
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # 2 am everyday 
+    - cron: '0 4 * * *'  # 4 am everyday
   push:
     branches: [ "main", "testing", "testing-gpuscreenrecorder","testing-tags" ]
     # Publish semver tags as releases.
