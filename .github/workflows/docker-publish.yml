@@ -9,11 +9,11 @@ on:
   schedule:
     - cron: '0 4 * * 6'  # 4 am on Saturdays
   push:
-    branches: [ "main", "testing", "testing-gpuscreenrecorder","testing-tags","testing-customkernel" ]
+    branches: [ "main", "testing", "testing-gpuscreenrecorder","testing-tags","testing-customkernel", "lto-kernel"  ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "main", "testing", "testing-gpuscreenrecorder","testing-tags","testing-customkernel" ]
+    branches: [ "main", "testing", "testing-gpuscreenrecorder","testing-tags","testing-customkernel", "lto-kernel" ]
 
 env:
   # Use docker.io for Docker Hub if empty
