@@ -34,6 +34,15 @@ jobs:
       id-token: write
 
     steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+
+      - name: Test with environment variables
+        run: echo $DATE
+        env:
+          DATE: ${{ steps.date.outputs.date }}
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
