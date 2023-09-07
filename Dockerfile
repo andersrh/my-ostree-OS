@@ -49,6 +49,8 @@ cd /tmp/gpu-screen-recorder-gtk && \
 ./install.sh && \
 # enable automatic updates
 sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf && \
+# change auto update interval
+sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=5h\nOnCalendar=*-*-* 06:30:00\nPersistent=true/' /usr/lib/systemd/system/rpm-ostreed-automatic.timer && \
 systemctl enable rpm-ostreed-automatic.timer && \
 # Clear cache, /var and /tmp and commit ostree
 rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
