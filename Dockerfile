@@ -47,6 +47,9 @@ cd /tmp/gpu-screen-recorder && \
 setcap cap_sys_admin+ep '/usr/bin/gsr-kms-server' && \
 cd /tmp/gpu-screen-recorder-gtk && \
 ./install.sh && \
+# enable automatic updates
+sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf && \
+systemctl enable rpm-ostreed-automatic.timer && \
 # Clear cache, /var and /tmp and commit ostree
 rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
