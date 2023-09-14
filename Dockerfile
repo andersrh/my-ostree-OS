@@ -14,7 +14,7 @@ COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 
 
 RUN cd /etc/yum.repos.d/ && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-dev/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp && \
 # Enable cliwrap.
 rpm-ostree cliwrap install-to-root / && \
