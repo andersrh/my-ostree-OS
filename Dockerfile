@@ -14,7 +14,7 @@ COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 
 
 RUN cd /etc/yum.repos.d/ && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-dev/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp && \
 # Enable cliwrap.
 rpm-ostree cliwrap install-to-root / && \
@@ -24,7 +24,7 @@ rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core
 rpm-ostree install kernel-cachyos-lts-headers && \
 # remove Okular and Firefox from base image
 rpm-ostree override remove firefox firefox-langpacks okular && \
-rpm-ostree install ksshaskpass uksmd clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
+rpm-ostree install ksshaskpass uksmd-lts clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
 # install RPM-fusion
 rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
 # install nonfree codecs
