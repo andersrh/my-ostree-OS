@@ -40,7 +40,7 @@ rpm-ostree install bore-sysctl && \
 # install Apple HFS+ tools
 rpm-ostree install hfsplus-tools && \
 # install Nvidia driver
-rpm-ostree install /tmp/nvidia.rpm && \
+rpm-ostree install /tmp/nvidia.rpm xorg-x11-drv-nvidia-cuda nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
