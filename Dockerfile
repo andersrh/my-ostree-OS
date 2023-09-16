@@ -11,6 +11,7 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 # copy gpu screen recorder and gpu screen recorder gtk
 COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
 COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
+COPY kmod-nvidia-6.1.53-clts1.0.fc38.x86_64-535.104.05-1.fc38.x86_64.rpm /tmp/nvidia.rpm
 
 
 RUN cd /etc/yum.repos.d/ && \
@@ -20,8 +21,8 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 rpm-ostree cliwrap install-to-root / && \
 # Replace the kernel, kernel-core and kernel-modules packages.
 rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lts && \
-# install kernel headers
-rpm-ostree install kernel-cachyos-lts-headers && \
+# install kernel headers and Nvidia driver
+rpm-ostree install kernel-cachyos-lts-headers /tmp/nvidia.rpm && \
 # remove Okular and Firefox from base image
 rpm-ostree override remove firefox firefox-langpacks okular && \
 rpm-ostree install ksshaskpass uksmd-lts clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
