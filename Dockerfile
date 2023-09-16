@@ -31,7 +31,7 @@ COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 
 RUN mkdir /tmp/nvidia
 
-COPY --from=akmods-builder /var/cache/akmods/nvidia/* /tmp/nvidia
+COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 COPY install-nvidia.sh /tmp/install-nvidia.sh
 
 
