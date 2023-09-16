@@ -28,7 +28,6 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 # copy gpu screen recorder and gpu screen recorder gtk
 COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
 COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
-COPY kmod-nvidia-6.1.53-clts1.0.fc38.x86_64-535.104.05-1.fc38.x86_64.rpm /tmp/nvidia.rpm
 
 RUN mkdir /tmp/nvidia
 
