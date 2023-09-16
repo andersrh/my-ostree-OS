@@ -101,6 +101,8 @@ RUN semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
 RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
 RUN ln -s /etc/alternatives/ld /usr/bin/ld
 
+RUN systemctl enable supergfxd.service
+
 # Clear cache, /var and /tmp and commit ostree
 RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
