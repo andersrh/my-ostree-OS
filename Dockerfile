@@ -88,7 +88,7 @@ RUN rpm-ostree install \
     /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
 
 RUN rpm-ostree install \
-    xorg-x11-drv-nvidia-{,cuda,devel,kmodsrc,power} \
+    xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc,-power} \
     xorg-x11-drv-nvidia-libs.i686 \
     nvidia-container-toolkit nvidia-vaapi-driver supergfxctl supergfxctl-plasmoid
 
