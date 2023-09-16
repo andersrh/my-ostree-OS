@@ -3,7 +3,7 @@ ARG SOURCE_IMAGE="${SOURCE_IMAGE:-kinoite}"
 ARG BASE_IMAGE="quay.io/fedora-ostree-desktops/${SOURCE_IMAGE}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-38}"
 
-FROM fedora:38 AS nvidia-builder
+FROM fedora:38 AS akmods-builder
 
 RUN dnf -y update && dnf -y install wget
 RUN cd /etc/yum.repos.d/ && \
@@ -12,9 +12,9 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 
 RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-ARG CACHEBUST=0
+#ARG CACHEBUST=0
 
-RUN dnf -y install kernel-cachyos-bore-eevdf kernel-cachyos-bore-eevdf-headers kernel-cachyos-bore-eevdf-devel akmod-nvidia
+RUN dnf -y install kernel-cachyos-bore-eevdf kernel-cachyos-bore-eevdf-headers kernel-cachyos-bore-eevdf-devel akmod-nvidia akmod-VirtualBox
 
 COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh
@@ -31,7 +31,7 @@ COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 
 RUN mkdir /tmp/nvidia
 
-COPY --from=nvidia-builder /var/cache/akmods/nvidia/* /tmp/nvidia
+COPY --from=akmods-builder /var/cache/akmods/nvidia/* /tmp/nvidia
 COPY install-nvidia.sh /tmp/install-nvidia.sh
 
 
@@ -62,6 +62,8 @@ rpm-ostree install bore-sysctl && \
 rpm-ostree install hfsplus-tools && \
 # install Nvidia driver
 ls /tmp/nvidia && /tmp/install-nvidia.sh && rpm-ostree install xorg-x11-drv-nvidia-cuda nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  && \
+# Install VirtualBox
+rpm-ostree install VirtualBox && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
