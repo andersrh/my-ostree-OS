@@ -21,8 +21,8 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 rpm-ostree cliwrap install-to-root / && \
 # Replace the kernel, kernel-core and kernel-modules packages.
 rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lts && \
-# install kernel headers and Nvidia driver
-rpm-ostree install kernel-cachyos-lts-headers /tmp/nvidia.rpm && \
+# install kernel headers
+rpm-ostree install kernel-cachyos-lts-headers && \
 # remove Okular and Firefox from base image
 rpm-ostree override remove firefox firefox-langpacks okular && \
 rpm-ostree install ksshaskpass uksmd-lts clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
@@ -39,6 +39,8 @@ rpm-ostree install kata-containers && \
 rpm-ostree install bore-sysctl && \
 # install Apple HFS+ tools
 rpm-ostree install hfsplus-tools && \
+# install Nvidia driver
+rpm-ostree install /tmp/nvidia.rpm && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
