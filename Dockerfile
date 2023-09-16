@@ -3,6 +3,19 @@ ARG SOURCE_IMAGE="${SOURCE_IMAGE:-kinoite}"
 ARG BASE_IMAGE="quay.io/fedora-ostree-desktops/${SOURCE_IMAGE}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-38}"
 
+FROM fedora:38 AS nvidia-builder
+
+RUN dnf -y update && dnf -y install wget
+RUN cd /etc/yum.repos.d/ && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp
+
+RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+RUN dnf -y install kernel-cachyos-lts kernel-cachyos-lts-headers kernel-cachyos-lts-devel akmod-nvidia
+RUN akmods --force
+
+
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
 
 ARG IMAGE_NAME="${IMAGE_NAME}"
@@ -12,6 +25,11 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
 COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 COPY kmod-nvidia-6.1.53-clts1.0.fc38.x86_64-535.104.05-1.fc38.x86_64.rpm /tmp/nvidia.rpm
+
+RUN mkdir /tmp/nvidia
+
+COPY --from=nvidia-builder /var/cache/akmods/nvidia/* /tmp/nvidia
+COPY install-nvidia.sh /tmp/install-nvidia.sh
 
 
 RUN cd /etc/yum.repos.d/ && \
@@ -38,9 +56,10 @@ rpm-ostree install kata-containers && \
 # add bore-sysctl
 rpm-ostree install bore-sysctl && \
 # install Apple HFS+ tools
-rpm-ostree install hfsplus-tools && \
+rpm-ostree install hfsplus-tools
+
 # install Nvidia driver
-rpm-ostree install /tmp/nvidia.rpm xorg-x11-drv-nvidia-cuda nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  && \
+RUN ls /tmp/nvidia && /tmp/install-nvidia.sh && rpm-ostree install xorg-x11-drv-nvidia-cuda nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
