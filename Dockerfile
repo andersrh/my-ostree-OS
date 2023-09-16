@@ -74,8 +74,31 @@ cd /tmp/gpu-screen-recorder-gtk && \
 # enable automatic updates
 sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf && \
 # change auto update interval
-sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=1h\nOnCalendar=*-*-* 06:30:00\nPersistent=true/' /usr/lib/systemd/system/rpm-ostreed-automatic.timer && \
+sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=1h\nOnCalendar=*-*-* 06:40:00\nPersistent=true/' /usr/lib/systemd/system/rpm-ostreed-automatic.timer && \
 systemctl enable rpm-ostreed-automatic.timer && \
 # Clear cache, /var and /tmp and commit ostree
 rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+ostree container commit
+
+FROM builder AS nvidia-addons
+
+COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms /tmp/akmods-rpms
+
+RUN rpm-ostree install \
+    /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
+
+RUN rpm-ostree install \
+    xorg-x11-drv-nvidia-{,cuda,devel,kmodsrc,power} \
+    xorg-x11-drv-nvidia-libs.i686 \
+    nvidia-container-toolkit nvidia-vaapi-driver supergfxctl supergfxctl-plasmoid
+
+RUN mv /etc/nvidia-container-runtime/config.toml{,.orig}
+RUN cp /etc/nvidia-container-runtime/config{-rootless,}.toml
+
+RUN semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
+RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
+RUN ln -s /etc/alternatives/ld /usr/bin/ld
+
+# Clear cache, /var and /tmp and commit ostree
+RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
