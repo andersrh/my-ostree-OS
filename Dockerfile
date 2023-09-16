@@ -12,8 +12,12 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 
 RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
+ARG CACHEBUST=0
+
 RUN dnf -y install kernel-cachyos-lts kernel-cachyos-lts-headers kernel-cachyos-lts-devel akmod-nvidia
-RUN akmods --force
+
+COPY akmods.sh /tmp/akmods.sh
+RUN /tmp/akmods.sh
 
 
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
@@ -56,10 +60,9 @@ rpm-ostree install kata-containers && \
 # add bore-sysctl
 rpm-ostree install bore-sysctl && \
 # install Apple HFS+ tools
-rpm-ostree install hfsplus-tools
-
+rpm-ostree install hfsplus-tools && \
 # install Nvidia driver
-RUN ls /tmp/nvidia && /tmp/install-nvidia.sh && rpm-ostree install xorg-x11-drv-nvidia-cuda nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  && \
+ls /tmp/nvidia && /tmp/install-nvidia.sh && rpm-ostree install xorg-x11-drv-nvidia-cuda nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
