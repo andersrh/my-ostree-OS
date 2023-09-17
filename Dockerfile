@@ -14,7 +14,7 @@ RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-re
 
 #ARG CACHEBUST=0
 
-RUN dnf -y install kernel-cachyos-bore-eevdf kernel-cachyos-bore-eevdf-headers kernel-cachyos-bore-eevdf-devel akmod-nvidia akmod-VirtualBox
+RUN dnf -y install kernel-cachyos-lts kernel-cachyos-lts-headers kernel-cachyos-lts-devel akmod-nvidia akmod-VirtualBox
 
 COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh
@@ -41,12 +41,12 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 # Enable cliwrap.
 rpm-ostree cliwrap install-to-root / && \
 # Replace the kernel, kernel-core and kernel-modules packages.
-rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-bore-eevdf && \
+rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lts && \
 # install kernel headers
-rpm-ostree install kernel-cachyos-bore-eevdf-headers && \
+rpm-ostree install kernel-cachyos-lts-headers && \
 # remove Okular and Firefox from base image
 rpm-ostree override remove firefox firefox-langpacks okular && \
-rpm-ostree install ksshaskpass uksmd clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
+rpm-ostree install ksshaskpass uksmd-lts clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
 # install RPM-fusion
 rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
 # install nonfree codecs
