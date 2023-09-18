@@ -103,6 +103,8 @@ RUN ln -s /etc/alternatives/ld /usr/bin/ld
 
 RUN systemctl enable supergfxd.service
 
+RUN rpm-ostree remove xorg-x11-drv-nvidia-power
+
 # Clear cache, /var and /tmp and commit ostree
 RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
