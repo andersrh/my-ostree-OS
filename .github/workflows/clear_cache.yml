@@ -1,9 +1,7 @@
 name: cleanup caches by a branch
 on:
   schedule:
-    - cron: '28 19 * * *'  # 1 am every day
-  push:
-    branches: [ "main", "testing", "testing-gpuscreenrecorder","testing-tags","testing-customkernel", "lto-kernel", "lts-kernel"  ]
+    - cron: '0 1 * * *'  # 1 am every day
 
 jobs:
   cleanup:
