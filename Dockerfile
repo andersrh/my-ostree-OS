@@ -90,7 +90,7 @@ RUN rpm-ostree install \
     /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
 
 RUN rpm-ostree install \
-    xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc,-power} \
+    xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc} \
     xorg-x11-drv-nvidia-libs.i686 \
     nvidia-container-toolkit nvidia-vaapi-driver supergfxctl supergfxctl-plasmoid
 
@@ -102,8 +102,6 @@ RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
 RUN ln -s /etc/alternatives/ld /usr/bin/ld
 
 RUN systemctl enable supergfxd.service
-
-RUN rpm-ostree remove xorg-x11-drv-nvidia-power
 
 # Clear cache, /var and /tmp and commit ostree
 RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
