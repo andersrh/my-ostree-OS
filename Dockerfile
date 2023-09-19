@@ -12,7 +12,8 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 
 RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-#ARG CACHEBUST=0
+# Update cachebust in case a rebuild is required without usage of cache.
+ARG CACHEBUST=0
 
 RUN dnf -y install kernel-cachyos-lts kernel-cachyos-lts-headers kernel-cachyos-lts-devel akmod-nvidia akmod-VirtualBox
 
@@ -29,21 +30,10 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
 COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 
-RUN mkdir /tmp/nvidia
-
-COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
-COPY install-nvidia.sh /tmp/install-nvidia.sh
-
 
 RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp && \
-# Enable cliwrap.
-rpm-ostree cliwrap install-to-root / && \
-# Replace the kernel, kernel-core and kernel-modules packages.
-rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lts && \
-# install kernel headers
-rpm-ostree install kernel-cachyos-lts-headers && \
 # remove Okular and Firefox from base image
 rpm-ostree override remove firefox firefox-langpacks okular && \
 rpm-ostree install ksshaskpass uksmd-lts clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
@@ -60,8 +50,8 @@ rpm-ostree install kata-containers && \
 rpm-ostree install bore-sysctl && \
 # install Apple HFS+ tools
 rpm-ostree install hfsplus-tools && \
-# install Nvidia driver
-ls /tmp/nvidia && /tmp/install-nvidia.sh && rpm-ostree install xorg-x11-drv-nvidia-cuda nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  && \
+# install Nvidia software
+rpm-ostree install nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  && \
 # Install VirtualBox
 rpm-ostree install VirtualBox && \
 # install Mullvad VPN
@@ -82,7 +72,7 @@ systemctl enable rpm-ostreed-automatic.timer && \
 rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
 
-FROM builder AS nvidia-addons
+FROM builder AS builder2
 
 COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms /tmp/akmods-rpms
 
@@ -92,19 +82,35 @@ RUN rpm-ostree install \
 RUN rpm-ostree install \
     xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc} \
     xorg-x11-drv-nvidia-libs.i686 \
-    nvidia-container-toolkit nvidia-vaapi-driver supergfxctl supergfxctl-plasmoid
+    nvidia-container-toolkit supergfxctl supergfxctl-plasmoid
 
 RUN mv /etc/nvidia-container-runtime/config.toml{,.orig}
 RUN cp /etc/nvidia-container-runtime/config{-rootless,}.toml
-
-RUN semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
-RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
-RUN ln -s /etc/alternatives/ld /usr/bin/ld
 
 RUN systemctl enable supergfxd.service
 
 RUN rpm-ostree uninstall xorg-x11-drv-nvidia-power
 
+RUN mkdir /tmp/nvidia
+
+COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
+COPY install-nvidia.sh /tmp/install-nvidia.sh
+
+# Enable cliwrap.
+RUN rpm-ostree cliwrap install-to-root / && \
+# Replace the kernel, kernel-core and kernel-modules packages.
+rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lts && \
+# install kernel headers
+rpm-ostree install kernel-cachyos-lts-headers
+
+# install akmods
+RUN ls /tmp/nvidia && /tmp/install-nvidia.sh
+
+RUN semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
+RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
+RUN ln -s /etc/alternatives/ld /usr/bin/ld
+
 # Clear cache, /var and /tmp and commit ostree
 RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
+ 
