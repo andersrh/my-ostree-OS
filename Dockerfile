@@ -30,13 +30,10 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
 COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 
-
-RUN cd /etc/yum.repos.d/ && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp && \
+RUN cd /tmp && \
 # remove Okular and Firefox from base image
 rpm-ostree override remove firefox firefox-langpacks okular && \
-rpm-ostree install ksshaskpass uksmd-lts clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
+rpm-ostree install ksshaskpass clang clang-devel cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld llvm nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
 # install RPM-fusion
 rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
 # install nonfree codecs
@@ -46,8 +43,6 @@ rpm-ostree install ffmpeg ffmpeg-libs intel-media-driver pipewire-codec-aptx lib
 rpm-ostree install pulseaudio-utils && \
 # install Kata containers
 rpm-ostree install kata-containers && \
-# add bore-sysctl
-rpm-ostree install bore-sysctl && \
 # install Apple HFS+ tools
 rpm-ostree install hfsplus-tools && \
 # install Nvidia software
@@ -80,6 +75,14 @@ RUN rpm-ostree install \
 RUN mkdir /tmp/nvidia
 
 COPY install-nvidia.sh /tmp/install-nvidia.sh
+
+RUN cd /etc/yum.repos.d/ && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp
+
+# add bore-sysctl and uksmd-lts
+RUN rpm-ostree install bore-sysctl uksmd-lts
+
 COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 
 # Enable cliwrap.
