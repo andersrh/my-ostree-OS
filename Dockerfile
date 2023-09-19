@@ -80,7 +80,7 @@ RUN rpm-ostree install \
     /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
 
 # install kernel headers
-RUN rpm-ostree install kernel-cachyos-lts-headers
+RUN rpm-ostree uninstall kernel-cachyos-bore-eevdf-rt-headers --install kernel-cachyos-lts-headers
 
 RUN rpm-ostree install \
     xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc} \
