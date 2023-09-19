@@ -113,4 +113,3 @@ RUN ln -s /etc/alternatives/ld /usr/bin/ld
 # Clear cache, /var and /tmp and commit ostree
 RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
- 
