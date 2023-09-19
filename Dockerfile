@@ -77,22 +77,10 @@ COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms /tmp/akmods-rpms
 RUN rpm-ostree install \
     /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
 
-RUN rpm-ostree install \
-    xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc} \
-    xorg-x11-drv-nvidia-libs.i686 \
-    nvidia-container-toolkit supergfxctl supergfxctl-plasmoid
-
-RUN mv /etc/nvidia-container-runtime/config.toml{,.orig}
-RUN cp /etc/nvidia-container-runtime/config{-rootless,}.toml
-
-RUN systemctl enable supergfxd.service
-
-RUN rpm-ostree uninstall xorg-x11-drv-nvidia-power
-
 RUN mkdir /tmp/nvidia
 
-COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 COPY install-nvidia.sh /tmp/install-nvidia.sh
+COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 
 # Enable cliwrap.
 RUN rpm-ostree cliwrap install-to-root / && \
@@ -104,6 +92,18 @@ RUN rpm-ostree install kernel-cachyos-lts-headers
 
 # install akmods
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh
+
+RUN rpm-ostree install \
+    xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc} \
+    xorg-x11-drv-nvidia-libs.i686 \
+    nvidia-container-toolkit supergfxctl supergfxctl-plasmoid
+
+RUN mv /etc/nvidia-container-runtime/config.toml{,.orig}
+RUN cp /etc/nvidia-container-runtime/config{-rootless,}.toml
+
+RUN systemctl enable supergfxd.service
+
+RUN rpm-ostree uninstall xorg-x11-drv-nvidia-power
 
 RUN semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
 RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
