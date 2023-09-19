@@ -52,8 +52,6 @@ rpm-ostree install bore-sysctl && \
 rpm-ostree install hfsplus-tools && \
 # install Nvidia software
 rpm-ostree install nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  && \
-# Install VirtualBox
-rpm-ostree install VirtualBox && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
@@ -79,9 +77,6 @@ COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms /tmp/akmods-rpms
 RUN rpm-ostree install \
     /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
 
-# install kernel headers
-RUN rpm-ostree uninstall kernel-cachyos-bore-eevdf-rt-headers --install kernel-cachyos-lts-headers
-
 RUN rpm-ostree install \
     xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc} \
     xorg-x11-drv-nvidia-libs.i686 \
@@ -104,12 +99,24 @@ RUN rpm-ostree cliwrap install-to-root / && \
 # Replace the kernel, kernel-core and kernel-modules packages.
 rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lts
 
+# install kernel headers
+RUN rpm-ostree install kernel-cachyos-lts-headers
+
 # install akmods
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh
 
 RUN semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
 RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
 RUN ln -s /etc/alternatives/ld /usr/bin/ld
+
+# Clear cache, /var and /tmp and commit ostree
+RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+ostree container commit
+
+FROM builder2 AS builder3
+
+# Install VirtualBox
+RUN rpm-ostree install VirtualBox
 
 # Clear cache, /var and /tmp and commit ostree
 RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
