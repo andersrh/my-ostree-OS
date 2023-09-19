@@ -62,7 +62,7 @@ sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostree
 sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=1h\nOnCalendar=*-*-* 06:40:00\nPersistent=true/' /usr/lib/systemd/system/rpm-ostreed-automatic.timer && \
 systemctl enable rpm-ostreed-automatic.timer && \
 # Clear cache, /var and /tmp and commit ostree
-rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
 
 FROM builder AS builder2
@@ -91,7 +91,7 @@ RUN rpm-ostree cliwrap install-to-root / && \
 rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lts
 
 # install kernel headers
-RUN rpm-ostree install kernel-cachyos-lts-headers
+RUN rpm-ostree override remove kernel-headers --install kernel-cachyos-lts-headers
 
 # install akmods
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh
@@ -113,7 +113,7 @@ RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
 RUN ln -s /etc/alternatives/ld /usr/bin/ld
 
 # Clear cache, /var and /tmp and commit ostree
-RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
 
 FROM builder2 AS builder3
@@ -122,5 +122,5 @@ FROM builder2 AS builder3
 RUN rpm-ostree install VirtualBox
 
 # Clear cache, /var and /tmp and commit ostree
-RUN rpm-ostree cleanup -m && rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
