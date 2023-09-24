@@ -122,7 +122,8 @@ FROM builder2 AS builder3
 
 # Install VirtualBox
 RUN rpm-ostree install VirtualBox
-COPY etc etc
+# Copy config files
+COPY etc /etc
 
 # Clear cache, /var and /tmp and commit ostree
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
