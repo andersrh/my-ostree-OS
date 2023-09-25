@@ -61,9 +61,16 @@ cd /tmp/gpu-screen-recorder-gtk && \
 sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf && \
 # change auto update interval
 sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=1h\nOnCalendar=*-*-* 06:40:00\nPersistent=true/' /usr/lib/systemd/system/rpm-ostreed-automatic.timer && \
-systemctl enable rpm-ostreed-automatic.timer && \
+systemctl enable rpm-ostreed-automatic.timer
+
+# Change ZRAM max to 16GB
+RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-generator.conf
+
+# Copy config files
+COPY etc /etc
+
 # Clear cache, /var and /tmp and commit ostree
-rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
 
 FROM builder AS builder2
@@ -122,8 +129,6 @@ FROM builder2 AS builder3
 
 # Install VirtualBox
 RUN rpm-ostree install VirtualBox
-# Copy config files
-COPY etc /etc
 
 # Clear cache, /var and /tmp and commit ostree
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
