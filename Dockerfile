@@ -60,8 +60,7 @@ cd /tmp/gpu-screen-recorder-gtk && \
 # enable automatic updates
 sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf && \
 # change auto update interval
-sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=1h\nOnCalendar=*-*-* 06:40:00\nPersistent=true/' /usr/lib/systemd/system/rpm-ostreed-automatic.timer && \
-systemctl enable rpm-ostreed-automatic.timer
+sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=1h\nOnCalendar=*-*-* 06:40:00\nPersistent=true/' /usr/lib/systemd/system/rpm-ostreed-automatic.timer
 
 # Change ZRAM max to 16GB
 RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-generator.conf
@@ -75,7 +74,7 @@ ostree container commit
 
 FROM builder AS builder2
 
-COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms /tmp/akmods-rpms
+COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms/ublue-os-nvidia-addons-*.rpm /tmp/akmods-rpms
 
 RUN rpm-ostree install \
     /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
@@ -88,6 +87,10 @@ RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/bieszcz
 
 # add bore-sysctl and uksmd-lts
 RUN rpm-ostree install bore-sysctl uksmd-lts
+
+# enable systemd services
+RUN systemctl enable rpm-ostreed-automatic.timer
+RUN systemctl enable uksmd.service
 
 COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 
