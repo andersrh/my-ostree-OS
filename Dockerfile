@@ -74,7 +74,7 @@ ostree container commit
 
 FROM builder AS builder2
 
-COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms/ublue-os-nvidia-addons-*.rpm /tmp/akmods-rpms
+COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms /tmp/akmods-rpms
 
 RUN rpm-ostree install \
     /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
