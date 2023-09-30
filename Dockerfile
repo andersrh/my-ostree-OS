@@ -27,9 +27,6 @@ FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
-# copy gpu screen recorder and gpu screen recorder gtk
-COPY gpu-screen-recorder/ /tmp/gpu-screen-recorder/
-COPY gpu-screen-recorder-gtk/ /tmp/gpu-screen-recorder-gtk/
 
 RUN cd /tmp && \
 # remove Okular and Firefox from base image
@@ -51,12 +48,6 @@ rpm-ostree install nvidia-vaapi-driver nvidia-persistenced opencl-filesystem  &&
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
-# install gpu screen recorder and gpu screen recorder gtk
-cd /tmp/gpu-screen-recorder && \
-./install.sh && \
-setcap cap_sys_admin+ep '/usr/bin/gsr-kms-server' && \
-cd /tmp/gpu-screen-recorder-gtk && \
-./install.sh && \
 # enable automatic updates
 sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf && \
 # change auto update interval
