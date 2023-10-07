@@ -30,7 +30,7 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN cd /tmp && \
 # remove Okular and Firefox from base image
-rpm-ostree override remove firefox firefox-langpacks okular && \
+rpm-ostree override remove firefox firefox-langpacks okular okular-libs okular-part && \
 rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
 # install RPM-fusion
 rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
