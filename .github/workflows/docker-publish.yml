@@ -34,6 +34,13 @@ jobs:
       id-token: write
 
     steps:
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v1
+        with:
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
