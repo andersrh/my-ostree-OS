@@ -16,7 +16,7 @@ RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp
 
-RUN dnf -y install kernel-cachyos-lts kernel-cachyos-lts-headers kernel-cachyos-lts-devel akmod-nvidia akmod-VirtualBox
+RUN dnf -y install kernel-cachyos-bore-eevdf kernel-cachyos-bore-eevdf-headers kernel-cachyos-bore-eevdf-devel akmod-nvidia akmod-VirtualBox
 
 COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh
@@ -91,10 +91,10 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fe
 # Enable cliwrap.
 RUN rpm-ostree cliwrap install-to-root / && \
 # Replace the kernel, kernel-core and kernel-modules packages.
-rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lts
+rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-bore-eevdf
 
 # install kernel headers
-RUN rpm-ostree override remove kernel-headers --install kernel-cachyos-lts-headers
+RUN rpm-ostree override remove kernel-headers --install kernel-cachyos-bore-eevdf-headers
 
 # install akmods
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh
