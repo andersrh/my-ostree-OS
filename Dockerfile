@@ -1,9 +1,9 @@
 ARG IMAGE_NAME="${IMAGE_NAME:-kinoite}"
 ARG SOURCE_IMAGE="${SOURCE_IMAGE:-kinoite}"
 ARG BASE_IMAGE="quay.io/fedora-ostree-desktops/${SOURCE_IMAGE}"
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-38}"
+ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-39}"
 
-FROM fedora:38 AS akmods-builder
+FROM fedora:39 AS akmods-builder
 
 RUN dnf -y update && dnf -y install wget
 
@@ -65,7 +65,7 @@ ostree container commit
 
 FROM builder AS builder2
 
-COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms /tmp/akmods-rpms
+COPY --from=ghcr.io/ublue-os/akmods-nvidia:39-535 /rpms /tmp/akmods-rpms
 
 RUN rpm-ostree install \
     /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
