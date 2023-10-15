@@ -53,7 +53,8 @@ sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostree
 sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=1h\nOnCalendar=*-*-* 06:40:00\nPersistent=true/' /usr/lib/systemd/system/rpm-ostreed-automatic.timer
 
 # Install TeamViewer
-RUN rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm
+RUN rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && \
+mv "/opt/teamviewer" /usr/lib/opt/
 
 # Change ZRAM max to 16GB
 RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-generator.conf
