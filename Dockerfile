@@ -40,8 +40,6 @@ rpm-ostree override remove libavcodec-free libavfilter-free libavformat-free lib
 rpm-ostree install ffmpeg ffmpeg-libs intel-media-driver pipewire-codec-aptx libva-intel-driver libva-utils mesa-va-drivers-freeworld && \
 # install Pulseaudio utilities
 rpm-ostree install pulseaudio-utils && \
-# install Kata containers
-rpm-ostree install kata-containers && \
 # install Apple HFS+ tools
 rpm-ostree install hfsplus-tools && \
 # install Nvidia software
@@ -53,6 +51,9 @@ mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
 sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf && \
 # change auto update interval
 sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=1h\nOnCalendar=*-*-* 06:40:00\nPersistent=true/' /usr/lib/systemd/system/rpm-ostreed-automatic.timer
+
+# Install TeamViewer
+RUN rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm
 
 # Change ZRAM max to 16GB
 RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-generator.conf
