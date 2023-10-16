@@ -1,2 +1,3 @@
 ln -s /usr/lib/opt/teamviewer /opt/
 ln -s "/usr/lib/opt/Mullvad VPN" /opt/
+mkdir /var/log/teamviewer15

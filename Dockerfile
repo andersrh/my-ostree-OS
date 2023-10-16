@@ -55,6 +55,8 @@ sed -i 's/OnUnitInactiveSec.*/OnUnitInactiveSec=1h\nOnCalendar=*-*-* 06:40:00\nP
 # Install TeamViewer
 RUN rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && \
 mv "/opt/teamviewer" /usr/lib/opt/
+# Disable Teamviewerd by default
+RUN systemctl disable teamviewerd
 
 # Change ZRAM max to 16GB
 RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-generator.conf
