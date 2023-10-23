@@ -23,7 +23,7 @@ COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh
 
 
-FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
+FROM ghcr.io/andersrh/my-ostree-os-base:main-38 AS builder
 
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
@@ -33,11 +33,6 @@ RUN cd /tmp && \
 # remove Okular and Firefox from base image
 rpm-ostree override remove firefox firefox-langpacks okular okular-libs okular-part && \
 rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
-# install RPM-fusion
-rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
-# install nonfree codecs
-rpm-ostree override remove libavcodec-free libavfilter-free libavformat-free libavutil-free libpostproc-free libswresample-free libswscale-free mesa-va-drivers --install libavcodec-freeworld && \
-rpm-ostree install ffmpeg ffmpeg-libs intel-media-driver pipewire-codec-aptx libva-intel-driver libva-utils mesa-va-drivers-freeworld && \
 # install Pulseaudio utilities
 rpm-ostree install pulseaudio-utils && \
 # install Apple HFS+ tools
