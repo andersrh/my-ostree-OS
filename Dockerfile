@@ -31,7 +31,7 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN cd /tmp && \
 # remove Okular and Firefox from base image
-rpm-ostree override remove firefox firefox-langpacks okular okular-libs okular-part && \
+rpm-ostree override remove firefox firefox-langpacks okular okular-libs okular-part mozilla-openh264 && \
 rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
 # install Pulseaudio utilities
 rpm-ostree install pulseaudio-utils && \
