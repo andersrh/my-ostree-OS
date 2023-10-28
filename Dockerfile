@@ -59,6 +59,12 @@ RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-ge
 # Copy config files
 COPY etc /etc
 
+# Clear cache, /var and /tmp and commit ostree
+RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+ostree container commit
+
+FROM builder AS builder2
+
 COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms /tmp/akmods-rpms
 
 RUN rpm-ostree install \
@@ -108,6 +114,12 @@ RUN rpm-ostree uninstall xorg-x11-drv-nvidia-power
 RUN semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
 RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
 RUN ln -s /etc/alternatives/ld /usr/bin/ld
+
+# Clear cache, /var and /tmp and commit ostree
+RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+ostree container commit
+
+FROM builder2 AS builder3
 
 # Install VirtualBox
 RUN rpm-ostree install VirtualBox
