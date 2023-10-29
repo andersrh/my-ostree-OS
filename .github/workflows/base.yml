@@ -1,4 +1,4 @@
-name: Docker
+name: base
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -7,19 +7,19 @@ name: Docker
 
 on:
   schedule:
-    - cron: '0 6 * * 6'  # 6 am on Saturdays
+    - cron: '0 5 * * *'  # 4 am every day
   push:
-    branches: [ "main", "testing", "testing-gpuscreenrecorder","testing-tags","newest-kernel", "lto-kernel", "lts-kernel"  ]
+    branches: [ "main" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "main", "testing", "testing-gpuscreenrecorder","testing-tags","newest-kernel", "lto-kernel" ]
+    branches: [ "main" ]
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository_owner }}/my-ostree-os-base
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 
@@ -87,11 +87,10 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           containerfiles: |
-            ./Dockerfile
+            ./base.Dockerfile
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-38 ${{ steps.meta.outputs.tags }}-38.${{ steps.date.outputs.date }}
           oci: false
-          layers: true
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
       # https://github.com/macbre/push-to-ghcr/issues/12
