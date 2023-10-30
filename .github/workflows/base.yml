@@ -10,7 +10,7 @@ on:
     - cron: '0 5 * * *'  # 4 am every day
   push:
     paths:
-        - './base.Dockerfile'
+        - 'base.Dockerfile'
 
 env:
   # Use docker.io for Docker Hub if empty
