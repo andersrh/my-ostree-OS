@@ -9,6 +9,7 @@ FROM ghcr.io/andersrh/my-ostree-os-base2:main-38 AS builder
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
+RUN rpm-ostree install kerver
 
 RUN cd /tmp && \
 # remove Okular and Firefox from base image
