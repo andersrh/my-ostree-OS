@@ -22,13 +22,10 @@ RUN dnf -y install akmod-nvidia akmod-VirtualBox
 COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh
 
-FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
+FROM ghcr.io/andersrh/my-ostree-os-base2:main-38 AS builder
 
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
-
-# install RPM-fusion
-RUN rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 COPY --from=ghcr.io/ublue-os/akmods-nvidia:38-535 /rpms /tmp/akmods-rpms
 
@@ -79,3 +76,6 @@ RUN rpm-ostree uninstall xorg-x11-drv-nvidia-power
 RUN semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
 RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
 RUN ln -s /etc/alternatives/ld /usr/bin/ld
+
+# install Nvidia software
+RUN rpm-ostree install nvidia-vaapi-driver nvidia-persistenced opencl-filesystem
