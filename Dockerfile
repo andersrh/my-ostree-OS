@@ -6,6 +6,7 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-38}"
 
 FROM ghcr.io/andersrh/my-ostree-os-kernel-akmods:main-38 AS builder
 
+ARG CACHEBUST=0
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
@@ -39,6 +40,8 @@ RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-ge
 
 # Copy config files
 COPY etc /etc
+# Copy /usr
+COPY usr /usr
 
 # Clear cache, /var and /tmp and commit ostree
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
