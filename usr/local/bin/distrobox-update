@@ -3,4 +3,3 @@
 podman rm -f general-cachyos
 
 distrobox assemble create --file /etc/distrobox.ini
-#
