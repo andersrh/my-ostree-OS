@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN dnf install -y xwininfo yt-dlp neofetch dnstop fedmod flatpak-module-tools fedpkg net-tools x2goclient qt-creator
 
-COPY bin/* /usr/local/bin/
+COPY containers/general/bin/* /usr/local/bin/
 RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/flatpak
 RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/podman
 RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/rpm-ostree
