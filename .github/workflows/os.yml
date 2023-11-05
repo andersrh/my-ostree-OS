@@ -11,8 +11,8 @@ on:
   push:
     paths:
         - 'Dockerfile'
-        - 'etc/'
-        - 'usr/'
+        - 'etc/*'
+        - 'usr/*'
 
 env:
   # Use docker.io for Docker Hub if empty
