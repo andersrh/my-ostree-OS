@@ -9,4 +9,4 @@ RUN git clone https://aur.archlinux.org/tradingview.git \
 && rm -rf /app/*
 USER root
 
-COPY create_shortcut /usr/local/bin/create_shortcut
+COPY containers/cachyos/tradingview/bin/create_shortcut /usr/local/bin/create_shortcut
