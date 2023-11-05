@@ -2,6 +2,7 @@
 
 podman rm -f general-cachyos
 podman rm -f tradingview
+podman rm -f general
 
 distrobox assemble create --file /etc/distrobox.ini
 
