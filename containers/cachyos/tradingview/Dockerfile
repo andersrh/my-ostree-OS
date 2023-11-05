@@ -8,3 +8,5 @@ RUN git clone https://aur.archlinux.org/tradingview.git \
 && makepkg -si --noconfirm \
 && rm -rf /app/*
 USER root
+
+COPY create_shortcut /usr/local/bin/create_shortcut

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+distrobox-export --app tradingview --extra-flags "--enable-features=WaylandWindowDecorations --ozone-platform=wayland"
