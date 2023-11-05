@@ -41,7 +41,6 @@ RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-ge
 # Copy config files
 COPY etc /etc
 # Copy /usr
-RUN mkdir -p /usr/local/bin
 COPY usr /usr
 
 # Clear cache, /var and /tmp and commit ostree
