@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type = Application
+Version = 1.0
+Name = Ledger Live
+Comment = Ledger Live
+Icon = ledgerlive
+Exec = ledgerlive --enable-features=WaylandWindowDecorations --ozone-platform=wayland
+Terminal = false

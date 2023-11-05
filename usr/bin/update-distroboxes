@@ -6,3 +6,5 @@ podman rm -f tradingview
 distrobox assemble create --file /etc/distrobox.ini
 
 distrobox enter tradingview -- distrobox-export --app tradingview --extra-flags "--enable-features=WaylandWindowDecorations --ozone-platform=wayland"
+distrobox enter general -- distrobox-export --app x2goclient
+distrobox enter general -- distrobox-export --app qtcreator
