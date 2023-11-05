@@ -6,6 +6,8 @@ podman rm -f general
 
 distrobox assemble create --file /etc/distrobox.ini
 
+distrobox create -i ghcr.io/andersrh/containers/fedora-toolbox/general:main --nvidia --home ~/containers/general -n general
+
 distrobox enter tradingview -- distrobox-export --app tradingview --extra-flags "--enable-features=WaylandWindowDecorations --ozone-platform=wayland"
 distrobox enter general -- distrobox-export --app x2goclient
 distrobox enter general -- distrobox-export --app qtcreator
