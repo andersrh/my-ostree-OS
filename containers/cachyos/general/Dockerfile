@@ -6,7 +6,7 @@ USER build
 RUN yay -Sy --noconfirm vscodium-bin
 USER root
 
-RUN pacman -Sy --noconfirm yt-dlp
+RUN pacman -Sy --noconfirm yt-dlp mesa-utils
 
 COPY containers/general/bin/* /usr/local/bin/
 RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/flatpak
