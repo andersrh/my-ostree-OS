@@ -10,16 +10,10 @@ ARG CACHEBUST=0
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
-RUN rpm-ostree install kerver
-
 RUN cd /tmp && \
 # remove Okular and Firefox from base image
 rpm-ostree override remove firefox firefox-langpacks okular okular-libs okular-part mozilla-openh264 && \
-rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager waydroid && \
-# install Pulseaudio utilities
-rpm-ostree install pulseaudio-utils && \
-# install Apple HFS+ tools
-rpm-ostree install hfsplus-tools && \
+rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager waydroid kerver pulseaudio-utils hfsplus-tools VirtualBox && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
@@ -42,16 +36,6 @@ RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-ge
 COPY etc /etc
 # Copy /usr
 COPY usr /usr
-
-# Clear cache, /var and /tmp and commit ostree
-RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
-ostree container commit
-
-FROM builder AS builder2
-
-
-# Install VirtualBox
-RUN rpm-ostree install VirtualBox
 
 # Clear cache, /var and /tmp and commit ostree
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
