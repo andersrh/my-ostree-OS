@@ -79,3 +79,7 @@ RUN ln -s /etc/alternatives/ld /usr/bin/ld
 
 # install Nvidia software
 RUN rpm-ostree install nvidia-vaapi-driver nvidia-persistenced opencl-filesystem
+
+# Clear cache, /var and /tmp and commit ostree
+RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+ostree container commit
