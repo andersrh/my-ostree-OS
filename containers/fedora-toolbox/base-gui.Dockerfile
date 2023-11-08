@@ -11,7 +11,8 @@ RUN dnf install -y libva ibus ibus-gtk3 ibus-libs ibus-m17n ibus-setup libmpc li
 RUN dnf install -y gcr3-base gcr3 gnome-keyring
 RUN dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
 && dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-RUN dnf install -y libva-intel-driver gstreamer1-plugin-openh264 ffmpeg libva-utils mesa-va-drivers-freeworld libavcodec-freeworld nvidia-vaapi-driver nvidia-persistenced opencl-filesystem
+RUN dnf install -y libva-intel-driver gstreamer1-plugin-openh264 ffmpeg libva-utils libavcodec-freeworld nvidia-vaapi-driver nvidia-persistenced opencl-filesystem
+RUN dnf swap -y mesa-va-drivers mesa-va-drivers-freeworld
 RUN dnf install -y \
     xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc} \
     xorg-x11-drv-nvidia-libs.i686
