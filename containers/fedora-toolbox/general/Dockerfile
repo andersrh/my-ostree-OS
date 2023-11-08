@@ -2,7 +2,7 @@ FROM ghcr.io/andersrh/containers/fedora-toolbox/base-gui:main
 
 WORKDIR /app
 
-RUN dnf install -y xwininfo yt-dlp neofetch dnstop fedmod flatpak-module-tools fedpkg net-tools x2goclient qt-creator
+RUN dnf install -y xwininfo yt-dlp neofetch dnstop fedmod flatpak-module-tools fedpkg net-tools x2goclient
 
 COPY containers/general/bin/* /usr/local/bin/
 RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/flatpak
