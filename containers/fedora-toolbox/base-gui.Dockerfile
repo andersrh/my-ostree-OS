@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora-toolbox:39
+FROM registry.fedoraproject.org/fedora-toolbox:38
 
 RUN dnf update -y
 RUN dnf install -y fish htop nano firejail
