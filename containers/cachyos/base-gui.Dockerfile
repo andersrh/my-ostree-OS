@@ -22,20 +22,4 @@ RUN pacman -Sy --noconfirm squashfs-tools python-pyasn1 python-pip qt6-wayland
 RUN pacman -Sy --noconfirm opencl-nvidia
 RUN pacman -Sy --noconfirm libxss
 RUN pacman -Sy --noconfirm xorg-xwininfo python-setuptools python-pyaes python-rsa python-certifi
-RUN pip3 install pip2pkgbuild python-binance pyside6 --break-system-packages
-RUN chown -R build /app
-RUN mkdir /app/sqlalchemy && chown -R build /app/sqlalchemy
-RUN mkdir /app/telethon && chown -R build /app/telethon
-USER build
-# python-binance sqlalchemy telethon pyside6
 
-WORKDIR /app/sqlalchemy
-RUN pip2pkgbuild sqlalchemy
-RUN makepkg -si --noconfirm
-
-WORKDIR /app/telethon
-RUN pip2pkgbuild telethon
-RUN makepkg -si --noconfirm
-
-RUN rm -rf /app/*
-USER root
