@@ -6,7 +6,7 @@ USER build
 RUN yay -Sy --noconfirm vscodium-bin
 USER root
 
-RUN pacman -Sy --noconfirm qtcreator
+RUN pacman -Sy --noconfirm qtcreator python-lsp-server
 
 RUN pip3 install pip2pkgbuild python-binance pyside6 --break-system-packages
 RUN chown -R build /app
