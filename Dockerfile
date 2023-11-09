@@ -32,6 +32,8 @@ RUN systemctl enable rpm-ostreed-automatic.timer
 # Change ZRAM max to 16GB
 RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-generator.conf
 
+RUN rpm-ostree install docker-compose
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
