@@ -22,4 +22,4 @@ RUN pacman -Sy --noconfirm squashfs-tools python-pyasn1 python-pip qt6-wayland
 RUN pacman -Sy --noconfirm opencl-nvidia
 RUN pacman -Sy --noconfirm libxss
 RUN pacman -Sy --noconfirm xorg-xwininfo python-setuptools python-pyaes python-rsa python-certifi
-
+RUN pacman -Sy --noconfirm qt6-webengine
