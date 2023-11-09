@@ -35,6 +35,9 @@ RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-ge
 # Add docker-compose dependency for "podman compose" command
 RUN rpm-ostree install docker-compose
 
+# Add docker -> podman alias for docker-compose to work properly
+RUN ln -s /usr/bin/podman /usr/bin/docker
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
