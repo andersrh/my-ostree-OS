@@ -9,9 +9,11 @@ podman rm -f development
 distrobox assemble create --file /etc/distrobox.ini
 
 podman pull ghcr.io/andersrh/containers/fedora-toolbox/general:main
-distrobox create -i ghcr.io/andersrh/containers/fedora-toolbox/general:main --nvidia --home ~/containers/general -n general
+distrobox create -i ghcr.io/andersrh/containers/fedora-toolbox/general:main --home ~/containers/general -n general
 
 distrobox enter tradingview -- distrobox-export --app tradingview --extra-flags "--enable-features=WaylandWindowDecorations --ozone-platform=wayland"
 distrobox enter ledgerlive -- distrobox-export --app ledger-live-desktop --extra-flags "--enable-features=WaylandWindowDecorations --ozone-platform=wayland"
 distrobox enter general -- distrobox-export --app x2goclient
-#distrobox enter general-cachyos -- distrobox-export --app qtcreator
+
+distrobox enter development -- distrobox-export --app qtcreator
+distrobox enter development -- distrobox-export --app codium
