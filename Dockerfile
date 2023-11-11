@@ -38,6 +38,8 @@ RUN rpm-ostree install docker-compose
 # Add docker -> podman alias for docker-compose to work properly
 RUN ln -s /usr/bin/podman /usr/bin/docker
 
+RUN rpm-ostree install neofetch
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
