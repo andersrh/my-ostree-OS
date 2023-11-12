@@ -23,6 +23,8 @@ RUN pacman -Sy --noconfirm opencl-nvidia
 RUN pacman -Sy --noconfirm libxss
 RUN pacman -Sy --noconfirm xorg-xwininfo python-setuptools python-pyaes python-rsa python-certifi
 RUN pacman -Sy --noconfirm qt6-webengine
+# Add Bitwarden dependencies
+RUN pacman -Sy --noconfirm electron25 c-ares jsoncpp libnss_nis woff2
 
 # Add Chaotic-AUR
 RUN pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com && \
