@@ -3,7 +3,11 @@ FROM ghcr.io/andersrh/containers/cachyos/base-gui:main
 WORKDIR /app
 
 USER build
-RUN yay -Sy --noconfirm vscodium-bin
+#RUN yay -Sy --noconfirm vscodium-bin
+RUN git clone https://aur.archlinux.org/vscodium-bin.git \
+&& cd vscodium-bin \
+&& makepkg -si --noconfirm \
+&& rm -rf /app/*
 USER root
 
 RUN pacman -Sy --noconfirm qtcreator python-lsp-server
