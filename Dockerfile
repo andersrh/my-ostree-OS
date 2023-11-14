@@ -12,7 +12,7 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN cd /tmp && \
 # remove Okular and Firefox from base image
-rpm-ostree override remove firefox firefox-langpacks okular okular-libs okular-part mozilla-openh264 && \
+rpm-ostree override remove firefox firefox-langpacks okular okular-libs okular-part && \
 rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager kerver pulseaudio-utils hfsplus-tools VirtualBox && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
