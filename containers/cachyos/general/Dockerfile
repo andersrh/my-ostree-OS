@@ -2,7 +2,7 @@ FROM ghcr.io/andersrh/containers/cachyos/base-gui:main
 
 WORKDIR /app
 
-RUN pacman -Sy --noconfirm yt-dlp mesa-utils
+RUN pacman -Sy --noconfirm yt-dlp mesa-utils whois
 
 COPY containers/general/bin/* /usr/local/bin/
 RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/flatpak
