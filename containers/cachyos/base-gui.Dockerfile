@@ -26,6 +26,9 @@ RUN pacman -Sy --noconfirm qt6-webengine
 # Add Bitwarden dependencies
 RUN pacman -Sy --noconfirm electron25 c-ares jsoncpp libnss_nis woff2
 
+# Link xdg-open to host in order to be able to open links etc.
+RUN rm -f /usr/bin/xdg-open && ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open
+
 # Add Chaotic-AUR
 RUN pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com && \
 pacman-key --lsign-key 3056513887B78AEB && \

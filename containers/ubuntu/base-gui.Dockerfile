@@ -5,4 +5,9 @@ RUN apt install -y fish htop nano firejail bash apt-utils bc curl dialog diffuti
 RUN apt install -y gconf2 gconf-service libnotify4 libappindicator1 libnss3 libsecret-1-dev gnome-keyring
 RUN apt install -y libasound2 libgles2
 
+
+# Link xdg-open to host in order to be able to open links etc.
+RUN rm -f /usr/bin/xdg-open && ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open
+
+
 RUN apt clean

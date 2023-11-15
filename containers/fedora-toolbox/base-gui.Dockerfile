@@ -20,3 +20,6 @@ RUN dnf install -y dbus-glib pciutils-libs
 RUN dnf -y install fuse
 RUN dnf install -y firefox
 RUN dnf install -y qt5-qtwayland qt6-qtwayland
+
+# Link xdg-open to host in order to be able to open links etc.
+RUN rm -f /usr/bin/xdg-open && ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open
