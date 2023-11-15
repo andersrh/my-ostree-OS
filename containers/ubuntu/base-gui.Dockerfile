@@ -9,5 +9,7 @@ RUN apt install -y libasound2 libgles2
 # Link xdg-open to host in order to be able to open links etc.
 RUN rm -f /usr/bin/xdg-open && ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open
 
+# Install host-spawn
+RUN wget https://github.com/1player/host-spawn/releases/download/1.5.0/host-spawn-x86_64 -O /usr/bin/host-spawn && chmod +x /usr/bin/host-spawn
 
 RUN apt clean
