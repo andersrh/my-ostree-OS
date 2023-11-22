@@ -8,7 +8,7 @@ RUN useradd -m --shell=/bin/false build && usermod -L build
 RUN echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN chown -R build /app
-RUN pacman -Sy --noconfirm yay bash bc curl diffutils findutils gnupg less lsof ncurses pinentry procps-ng shadow sudo time util-linux wget vte-common
+RUN pacman -Sy --noconfirm yay bash bc curl diffutils findutils gnupg less lsof ncurses pinentry procps-ng shadow sudo time util-linux wget vte-common fuse
 RUN pacman -Sy --noconfirm fish htop
 RUN pacman -Sy --noconfirm libva libva-intel-driver libva-mesa-driver libva-utils intel-media-driver
 RUN pacman -Sy --noconfirm mesa opengl-driver vulkan-intel vulkan-radeon
