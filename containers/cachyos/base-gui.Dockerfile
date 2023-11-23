@@ -17,7 +17,7 @@ RUN pacman -Sy --noconfirm xdg-utils
 RUN pacman -Sy --noconfirm nano ibus dbus-glib
 RUN pacman -Sy --noconfirm ttf-dejavu noto-fonts ttf-liberation
 RUN pacman -Sy --noconfirm nvidia-utils
-RUN pacman -Sy --noconfirm squashfs-tools python-pyasn1 python-pip qt6-wayland
+RUN pacman -Sy --noconfirm squashfs-tools python-pyasn1 python-pip qt6-wayland qt5-wayland
 
 RUN pacman -Sy --noconfirm opencl-nvidia
 RUN pacman -Sy --noconfirm libxss
