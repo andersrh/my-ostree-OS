@@ -7,6 +7,7 @@ podman rm -f ledgerlive2
 podman rm -f development
 podman rm -f bitwarden
 podman rm -f lbry
+podman rm -f electron-cash
 
 distrobox assemble create --file /etc/distrobox.ini
 
@@ -22,3 +23,4 @@ distrobox enter development -- distrobox-export --app codium
 
 distrobox enter bitwarden -- distrobox-export --app bitwarden-desktop
 distrobox enter lbry -- distrobox-export --app lbry
+distrobox enter electron-cash -- distrobox-export --app electron-cash
