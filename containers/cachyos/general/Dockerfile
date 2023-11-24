@@ -12,3 +12,5 @@ RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/nvtop
 RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/distrobox
 RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/uksmdstats
 RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/kerver
+RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/mullvad
+RUN ln -s /usr/bin/distrobox-host-exec /usr/local/bin/mullvad-exclude
