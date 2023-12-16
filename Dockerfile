@@ -40,6 +40,9 @@ RUN ln -s /usr/bin/podman /usr/bin/docker
 
 RUN rpm-ostree install neofetch
 
+# Disable SELinux
+RUN sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/sysconfig/selinux && sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/selinux/config
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
