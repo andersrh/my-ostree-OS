@@ -48,6 +48,9 @@ COPY etc /etc
 # Copy /usr
 COPY usr /usr
 
+# Enable /nix mount service
+RUN systemctl enable mount-nix-prepare.service
+
 # Clear cache, /var and /tmp and commit ostree
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 ostree container commit
