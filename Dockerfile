@@ -13,7 +13,7 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 RUN cd /tmp && \
 # remove Okular and Firefox from base image
 rpm-ostree override remove firefox firefox-langpacks && \
-rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder gparted libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager kerver pulseaudio-utils hfsplus-tools VirtualBox && \
+rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager kerver pulseaudio-utils hfsplus-tools VirtualBox && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
 mv "/opt/Mullvad VPN" /usr/lib/opt/ && \
@@ -37,8 +37,6 @@ RUN rpm-ostree install docker-compose
 
 # Add docker -> podman alias for docker-compose to work properly
 RUN ln -s /usr/bin/podman /usr/bin/docker
-
-RUN rpm-ostree install neofetch
 
 # Disable SELinux
 RUN sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/sysconfig/selinux && sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/selinux/config
