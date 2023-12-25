@@ -41,6 +41,12 @@ RUN ln -s /usr/bin/podman /usr/bin/docker
 # Disable SELinux
 RUN sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/sysconfig/selinux && sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/selinux/config
 
+# pipewire clang
+RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieua/pipewire-clang/repo/fedora-$(rpm -E %fedora)/trixieua-pipewire-clang-fedora-$(rpm -E %fedora).repo && rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:pipewire-clang pipewire pipewire-libs pipewire-pulseaudio pipewire-alsa pipewire-utils pipewire-gstreamer pipewire-jack-audio-connection-kit pipewire-jack-audio-connection-kit-libs
+
+# Xwayland clang
+RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieua/Xwayland/repo/fedora-$(rpm -E %fedora)/trixieua-Xwayland-fedora-$(rpm -E %fedora).repo && rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:Xwayland xorg-x11-server-Xwayland
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
