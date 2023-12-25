@@ -4,3 +4,4 @@ nix-env -iA nixpkgs.neofetch
 nix-env -iA nixpkgs.boxxy
 nix-env -iA nixpkgs.xorg.xwininfo
 nix-env -iA nixpkgs.unixtools.ifconfig
+nix-env -iA nixpkgs.btop
