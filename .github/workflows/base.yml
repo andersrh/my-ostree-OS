@@ -11,6 +11,7 @@ on:
   push:
     paths:
         - 'base.Dockerfile'
+        - 'repo/**'
 
 env:
   # Use docker.io for Docker Hub if empty
