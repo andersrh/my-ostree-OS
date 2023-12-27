@@ -47,6 +47,9 @@ RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieu
 # Xwayland clang
 RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieua/Xwayland/repo/fedora-$(rpm -E %fedora)/trixieua-Xwayland-fedora-$(rpm -E %fedora).repo && rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:Xwayland xorg-x11-server-Xwayland
 
+# replace podman with clang version
+RUN rpm-ostree override replace --experimental --from repo=fedora-clang podman
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
