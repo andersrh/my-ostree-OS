@@ -11,8 +11,6 @@ ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN cd /tmp && \
-# remove Okular and Firefox from base image
-rpm-ostree override remove firefox firefox-langpacks && \
 rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager kerver pulseaudio-utils hfsplus-tools VirtualBox && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
@@ -48,7 +46,7 @@ RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieu
 RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieua/Xwayland/repo/fedora-$(rpm -E %fedora)/trixieua-Xwayland-fedora-$(rpm -E %fedora).repo && rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:Xwayland xorg-x11-server-Xwayland
 
 # software to be replaced with clang version
-RUN rpm-ostree override replace --experimental --from repo=fedora-clang podman tar kpipewire NetworkManager-libnm NetworkManager NetworkManager-vpnc NetworkManager-wwan NetworkManager-wifi NetworkManager-ppp NetworkManager-bluetooth NetworkManager-config-connectivity-fedora wayland-utils xz xz-libs gzip bzip2-libs bzip2 libzip
+RUN rpm-ostree override replace --experimental --from repo=fedora-clang podman tar kpipewire NetworkManager-libnm NetworkManager NetworkManager-vpnc NetworkManager-wwan NetworkManager-wifi NetworkManager-ppp NetworkManager-bluetooth NetworkManager-config-connectivity-fedora wayland-utils xz xz-libs gzip bzip2-libs bzip2 libzip firefox firefox-langpacks
 
 # Copy config files
 COPY etc /etc
