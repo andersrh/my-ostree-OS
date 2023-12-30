@@ -9,11 +9,15 @@ RUN dnf -y update && dnf -y install wget
 
 RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
+COPY rpms/akmods-0.5.8-7.fc39.clang.noarch.rpm /tmp/clang-akmods.rpm
+
+RUN dnf -y install /tmp/clang-akmods.rpm
+
 # Update cachebust in case a rebuild is required without usage of cache.
 ARG CACHEBUST=9
 
 RUN cd /etc/yum.repos.d/ && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
+wget https://copr.fedorainfracloud.org/coprs/bebeb/kernel-cachyos-clang-flto/repo/fedora-$(rpm -E %fedora)/bebeb-kernel-cachyos-clang-flto-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp
 
 RUN dnf -y install kernel-cachyos kernel-cachyos-headers kernel-cachyos-devel kernel-cachyos-modules kernel-cachyos-core kernel-cachyos-devel-matched
@@ -48,7 +52,7 @@ RUN systemctl enable uksmd.service
 COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 
 RUN cd /etc/yum.repos.d/ && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-fedora-$(rpm -E %fedora).repo && cd /tmp
+wget https://copr.fedorainfracloud.org/coprs/bebeb/kernel-cachyos-clang-flto/repo/fedora-$(rpm -E %fedora)/bebeb-kernel-cachyos-clang-flto-fedora-$(rpm -E %fedora).repo && cd /tmp
 
 # Enable cliwrap.
 RUN rpm-ostree cliwrap install-to-root / && \
