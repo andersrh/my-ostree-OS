@@ -1,10 +1,10 @@
 ARG IMAGE_NAME="${IMAGE_NAME:-kinoite}"
 ARG SOURCE_IMAGE="${SOURCE_IMAGE:-kinoite}"
 ARG BASE_IMAGE="quay.io/fedora-ostree-desktops/${SOURCE_IMAGE}"
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-38}"
+ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-39}"
 
 
-FROM ghcr.io/andersrh/my-ostree-os-kernel-akmods:main-38 AS builder
+FROM ghcr.io/andersrh/my-ostree-os-kernel-akmods:main-39 AS builder
 
 ARG CACHEBUST=0
 ARG IMAGE_NAME="${IMAGE_NAME}"

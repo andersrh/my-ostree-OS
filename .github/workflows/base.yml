@@ -87,7 +87,7 @@ jobs:
           containerfiles: |
             ./base.Dockerfile
           image: ${{ env.IMAGE_NAME }}
-          tags: ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-38 ${{ steps.meta.outputs.tags }}-38.${{ steps.date.outputs.date }}
+          tags: ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-39 ${{ steps.meta.outputs.tags }}-39.${{ steps.date.outputs.date }}
           oci: false
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
