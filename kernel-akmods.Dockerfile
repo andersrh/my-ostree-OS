@@ -26,7 +26,7 @@ RUN dnf -y install akmod-nvidia akmod-VirtualBox
 COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh
 
-FROM ghcr.io/andersrh/my-ostree-os-base2:main-39 AS builder
+FROM ghcr.io/andersrh/my-ostree-os-base2:f39 AS builder
 
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
