@@ -48,6 +48,9 @@ RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieu
 # software to be replaced with clang version
 RUN rpm-ostree override replace --experimental --from repo=fedora-clang podman tar kpipewire NetworkManager-libnm NetworkManager NetworkManager-vpnc NetworkManager-wwan NetworkManager-wifi NetworkManager-ppp NetworkManager-bluetooth NetworkManager-config-connectivity-fedora wayland-utils xz xz-libs gzip bzip2-libs bzip2 libzip firefox firefox-langpacks libarchive rsync libva
 
+# add Haruna media player to host for better VAAPI performance
+RUN rpm-ostree install haruna
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
