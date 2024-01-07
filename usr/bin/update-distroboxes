@@ -5,7 +5,6 @@ podman rm -f tradingview
 podman rm -f general
 podman rm -f ledgerlive
 podman rm -f development
-podman rm -f bitwarden
 podman rm -f lbry
 podman rm -f electron-cash
 
@@ -21,6 +20,5 @@ distrobox enter general -- distrobox-export --app x2goclient
 distrobox enter development -- distrobox-export --app qtcreator
 distrobox enter development -- distrobox-export --app codium
 
-distrobox enter bitwarden -- distrobox-export --app bitwarden-desktop
 distrobox enter lbry -- distrobox-export --app lbry
 distrobox enter electron-cash -- distrobox-export --app electron-cash
