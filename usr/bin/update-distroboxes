@@ -4,7 +4,6 @@ podman rm -f general-cachyos
 podman rm -f general
 podman rm -f development
 podman rm -f lbry
-podman rm -f electron-cash
 
 distrobox assemble create --file /etc/distrobox.ini
 
@@ -17,4 +16,3 @@ distrobox enter development -- distrobox-export --app qtcreator
 distrobox enter development -- distrobox-export --app codium
 
 distrobox enter lbry -- distrobox-export --app lbry
-distrobox enter electron-cash -- distrobox-export --app electron-cash
