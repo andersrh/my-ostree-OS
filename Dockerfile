@@ -54,6 +54,9 @@ RUN rpm-ostree override replace --experimental --from repo=fedora-clang podman t
 # Get latest Ledger Live AppImage
 RUN wget https://download.live.ledger.com/latest/linux -O /usr/bin/ledgerlive && chmod +x /usr/bin/ledgerlive
 
+# Install AppImageLauncher
+RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/download/continuous/appimagelauncher-2.2.0-gha111.d9d4c73.x86_64.rpm
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
