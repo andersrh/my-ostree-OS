@@ -57,6 +57,9 @@ RUN wget https://download.live.ledger.com/latest/linux -O /usr/bin/ledgerlive &&
 # Install AppImageLauncher
 RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/download/continuous/appimagelauncher-2.2.0-gha111.d9d4c73.x86_64.rpm
 
+# Install Gwenview and kimageformats for full support for image formats such as HEIC
+RUN rpm-ostree install gwenview libheif-freeworld
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
