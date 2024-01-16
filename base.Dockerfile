@@ -19,8 +19,12 @@ RUN rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-fre
 
 # 32-bit dependencies for the Nvidia driver.
 RUN rpm-ostree install glibc.i686
+
 # install nonfree codecs
 RUN rpm-ostree override remove libavcodec-free libavfilter-free libavformat-free libavutil-free libpostproc-free libswresample-free libswscale-free --install libavcodec-freeworld
+
+# Install HEIC support for Gwenview and Dolphin (and potentially other applications)
+RUN rpm-ostree install libheif-freeworld
 
 # Mesa clang
 RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:mesa-clang mesa-filesystem mesa-libglapi mesa-dri-drivers mesa-libgbm mesa-libEGL mesa-libGL mesa-vulkan-drivers mesa-libxatracker mesa-vdpau-drivers mesa-libOSMesa mesa-libOpenCL mesa-va-drivers
