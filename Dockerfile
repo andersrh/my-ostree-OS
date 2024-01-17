@@ -51,9 +51,6 @@ RUN rpm-ostree install haruna
 # software to be replaced with clang version
 RUN rpm-ostree override replace --experimental --from repo=fedora-clang podman tar kpipewire NetworkManager-libnm NetworkManager NetworkManager-vpnc NetworkManager-wwan NetworkManager-wifi NetworkManager-ppp NetworkManager-bluetooth NetworkManager-config-connectivity-fedora wayland-utils xz xz-libs gzip bzip2-libs bzip2 libzip firefox firefox-langpacks libarchive rsync libva dbus-broker dbus-glib wget dbusmenu-qt
 
-# Get latest Ledger Live AppImage
-RUN wget https://download.live.ledger.com/latest/linux -O /usr/bin/ledgerlive && chmod +x /usr/bin/ledgerlive
-
 # Install AppImageLauncher
 RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/download/continuous/appimagelauncher-2.2.0-gha111.d9d4c73.x86_64.rpm
 
