@@ -57,9 +57,6 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 # Install Gwenview on host for full support for image formats such as HEIC
 RUN rpm-ostree install gwenview
 
-# Install kio-admin for root access through Dolphin by right-clicking and pressing "Open as Administrator"
-RUN rpm-ostree install kio-admin
-
 # Copy config files
 COPY etc /etc
 # Copy /usr
