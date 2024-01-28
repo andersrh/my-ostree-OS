@@ -4,7 +4,7 @@ ARG BASE_IMAGE="quay.io/fedora-ostree-desktops/${SOURCE_IMAGE}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-39}"
 
 
-FROM ghcr.io/andersrh/my-ostree-os-kernel-akmods:main-39 AS builder
+FROM ghcr.io/andersrh/my-ostree-os-kernel-akmods:lts-kernel-39 AS builder
 
 ARG CACHEBUST=0
 ARG IMAGE_NAME="${IMAGE_NAME}"
