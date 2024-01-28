@@ -14,9 +14,10 @@ ARG CACHEBUST=9
 
 RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-dev/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-dev-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp
 
-RUN dnf -y install kernel-cachyos-lto kernel-cachyos-lto-headers kernel-cachyos-lto-devel kernel-cachyos-lto-modules kernel-cachyos-lto-core kernel-cachyos-lto-devel-matched
+RUN dnf -y install kernel-cachyos-lts-lto kernel-cachyos-lts-lto-headers kernel-cachyos-lts-lto-devel kernel-cachyos-lts-lto-modules kernel-cachyos-lts-lto-core kernel-cachyos-lts-lto-devel-matched
 RUN dnf -y install akmod-nvidia akmod-VirtualBox
 
 COPY akmods.sh /tmp/akmods.sh
@@ -48,15 +49,16 @@ RUN systemctl enable uksmd.service
 COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 
 RUN cd /etc/yum.repos.d/ && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && cd /tmp
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-dev/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-dev-fedora-$(rpm -E %fedora).repo && cd /tmp
 
 # Enable cliwrap.
 RUN rpm-ostree cliwrap install-to-root / && \
 # Replace the kernel, kernel-core and kernel-modules packages.
-rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lto
+rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lts-lto
 
 # install kernel headers
-RUN rpm-ostree override remove kernel-headers --install kernel-cachyos-lto-headers
+RUN rpm-ostree override remove kernel-headers --install kernel-cachyos-lts-lto-headers
 
 # install akmods
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh
