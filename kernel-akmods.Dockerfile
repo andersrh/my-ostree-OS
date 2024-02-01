@@ -14,7 +14,6 @@ ARG CACHEBUST=9
 
 RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-dev/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-dev-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && cd /tmp
 
 RUN dnf -y install kernel-cachyos-lts-lto kernel-cachyos-lts-lto-headers kernel-cachyos-lts-lto-devel kernel-cachyos-lts-lto-modules kernel-cachyos-lts-lto-core kernel-cachyos-lts-lto-devel-matched
@@ -50,7 +49,7 @@ COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 
 RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-dev/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-dev-fedora-$(rpm -E %fedora).repo && cd /tmp
+cd /tmp
 
 # Enable cliwrap.
 RUN rpm-ostree cliwrap install-to-root / && \
