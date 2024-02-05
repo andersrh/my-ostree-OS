@@ -7,7 +7,7 @@ name: kernel-akmods
 
 on:
   schedule:
-    - cron: '0 5 * * 6'  # 5 am on Saturdays
+    - cron: '0 5 */3 * *'  # 5 am every 3rd day
   push:
     paths:
         - 'kernel-akmods.Dockerfile'
