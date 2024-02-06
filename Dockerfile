@@ -1,2 +1,2 @@
 
-FROM ghcr.io/andersrh/my-ostree-os:lts-kernel-39.20240202
+FROM ghcr.io/andersrh/my-ostree-os:main-39.20240204
