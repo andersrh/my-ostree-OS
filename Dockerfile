@@ -1,2 +1,2 @@
 
-FROM ghcr.io/andersrh/my-ostree-os:main-39.20240204
+FROM ghcr.io/andersrh/my-ostree-os:main-39.20240207
