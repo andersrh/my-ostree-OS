@@ -39,8 +39,8 @@ COPY install-nvidia.sh /tmp/install-nvidia.sh
 
 RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo
 
-# add bore-sysctl and uksmd-lts
-RUN rpm-ostree install bore-sysctl uksmd-rawhide
+# add bore-sysctl and uksmd
+RUN rpm-ostree install bore-sysctl uksmd
 
 # enable systemd services
 
