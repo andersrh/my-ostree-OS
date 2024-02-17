@@ -51,6 +51,9 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 # Install Gwenview on host for full support for image formats such as HEIC
 RUN rpm-ostree install gwenview
 
+# Install and enable ananicy-cpp
+RUN rpm-ostree install ananicy-cpp ananicy-cpp-rules && systemctl enable ananicy-cpp.service
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
