@@ -52,7 +52,7 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 RUN rpm-ostree install gwenview
 
 # Install and enable ananicy-cpp
-RUN rpm-ostree install ananicy-cpp ananicy-cpp-rules && systemctl enable ananicy-cpp.service
+RUN rpm-ostree cleanup -m && rpm-ostree install ananicy-cpp ananicy-cpp-rules && systemctl enable ananicy-cpp.service
 
 # Copy config files
 COPY etc /etc
