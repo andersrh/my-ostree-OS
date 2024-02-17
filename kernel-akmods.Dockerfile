@@ -58,7 +58,7 @@ RUN rpm-ostree cliwrap install-to-root / && \
 rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lto
 
 # install kernel headers
-RUN rpm-ostree override remove kernel-headers --install kernel-cachyos-lto-headers
+RUN rpm-ostree install kernel-cachyos-lto-headers
 
 # install akmods
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh
