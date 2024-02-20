@@ -56,6 +56,7 @@ RUN rpm-ostree install ananicy-cpp ananicy-cpp-rules
 
 # Install system76-scheduler
 RUN wget https://copr.fedorainfracloud.org/coprs/kylegospo/system76-scheduler/repo/fedora-$(rpm -E %fedora)/kylegospo-system76-scheduler-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_kylegospo-system76-scheduler.repo && \
+wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_andersrh-my-ostree-os.repo && \
 rpm-ostree install system76-scheduler
 
 # Copy config files
