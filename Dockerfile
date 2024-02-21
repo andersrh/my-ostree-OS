@@ -39,11 +39,14 @@ RUN ln -s /usr/bin/podman /usr/bin/docker
 # Disable SELinux
 RUN sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/sysconfig/selinux && sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/selinux/config
 
+# Xwayland clang
+RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieua/Xwayland/repo/fedora-$(rpm -E %fedora)/trixieua-Xwayland-fedora-$(rpm -E %fedora).repo && rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:Xwayland xorg-x11-server-Xwayland
+
 # add Haruna media player to host for better VAAPI performance
 RUN rpm-ostree install haruna
 
 # software to be replaced with clang version
-RUN rpm-ostree override replace --experimental --from repo=fedora-clang podman tar kpipewire NetworkManager-libnm NetworkManager NetworkManager-vpnc NetworkManager-wwan NetworkManager-wifi NetworkManager-ppp NetworkManager-bluetooth NetworkManager-config-connectivity-fedora wayland-utils xz xz-libs gzip bzip2-libs bzip2 libzip firefox firefox-langpacks libarchive rsync libva dbus-broker dbus-glib wget dbusmenu-qt xorg-x11-server-Xwayland
+RUN rpm-ostree override replace --experimental --from repo=fedora-clang podman tar kpipewire NetworkManager-libnm NetworkManager NetworkManager-vpnc NetworkManager-wwan NetworkManager-wifi NetworkManager-ppp NetworkManager-bluetooth NetworkManager-config-connectivity-fedora wayland-utils xz xz-libs gzip bzip2-libs bzip2 libzip firefox firefox-langpacks libarchive rsync libva dbus-broker dbus-glib wget dbusmenu-qt
 
 # Install AppImageLauncher
 RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/download/continuous/appimagelauncher-2.2.0-gha111.d9d4c73.x86_64.rpm
