@@ -62,6 +62,10 @@ RUN wget https://copr.fedorainfracloud.org/coprs/kylegospo/system76-scheduler/re
 wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_andersrh-my-ostree-os.repo && \
 rpm-ostree install system76-scheduler
 
+# Install Bubblejail
+RUN wget https://copr.fedorainfracloud.org/coprs/secureblue/bubblejail/repo/fedora-$(rpm -E %fedora)/secureblue-bubblejail-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_secureblue-bubblejail.repo && \
+rpm-ostree install bubblejail
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
