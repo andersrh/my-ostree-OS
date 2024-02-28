@@ -7,7 +7,7 @@ name: os
 
 on:
   schedule:
-    - cron: '0 6 */3 * *'  # 6 am every 3rd day
+    - cron: '0 7 */3 * *'  # 7 am every 3rd day
   push:
     paths:
         - 'Dockerfile'
