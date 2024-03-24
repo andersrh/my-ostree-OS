@@ -21,7 +21,7 @@ RUN rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-fre
 RUN rpm-ostree install glibc.i686
 
 # pipewire clang
-RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieua/pipewire-clang/repo/fedora-$(rpm -E %fedora)/trixieua-pipewire-clang-fedora-$(rpm -E %fedora).repo && rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:pipewire-clang pipewire pipewire-libs pipewire-pulseaudio pipewire-alsa pipewire-utils pipewire-gstreamer pipewire-jack-audio-connection-kit pipewire-jack-audio-connection-kit-libs
+RUN rpm-ostree override replace --experimental --from repo=fedora-clang pipewire pipewire-libs pipewire-pulseaudio pipewire-alsa pipewire-utils pipewire-gstreamer pipewire-jack-audio-connection-kit pipewire-jack-audio-connection-kit-libs
 
 # install nonfree codecs
 RUN rpm-ostree override remove libavcodec-free libavfilter-free libavformat-free libavutil-free libpostproc-free libswresample-free libswscale-free --install libavcodec-freeworld
