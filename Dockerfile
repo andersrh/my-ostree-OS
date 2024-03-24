@@ -40,7 +40,7 @@ RUN ln -s /usr/bin/podman /usr/bin/docker
 RUN sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/sysconfig/selinux && sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/selinux/config
 
 # Xwayland clang
-RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieua/Xwayland/repo/fedora-$(rpm -E %fedora)/trixieua-Xwayland-fedora-$(rpm -E %fedora).repo && rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:Xwayland xorg-x11-server-Xwayland
+RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieua/Xwayland/repo/fedora-$(rpm -E %fedora)/trixieua-Xwayland-fedora-$(rpm -E %fedora).repo && rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:Xwayland --from repo=copr:copr.fedorainfracloud.org:andersrh:my-ostree-os xorg-x11-server-Xwayland
 
 # add Haruna media player to host for better VAAPI performance
 RUN rpm-ostree install haruna
