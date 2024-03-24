@@ -10,7 +10,7 @@ ARG CACHEBUST=3
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
-RUN cd /tmp && \
+RUN wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_andersrh-my-ostree-os.repo && cd /tmp && \
 rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager kerver pulseaudio-utils hfsplus-tools VirtualBox && \
 # install Mullvad VPN
 mkdir /var/opt && rpm-ostree install https://mullvad.net/da/download/app/rpm/latest && \
@@ -58,8 +58,7 @@ RUN rpm-ostree install gwenview
 RUN rpm-ostree install ananicy-cpp ananicy-cpp-rules
 
 # Install system76-scheduler
-RUN wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_andersrh-my-ostree-os.repo && \
-rpm-ostree install system76-scheduler
+RUN rpm-ostree install system76-scheduler
 
 # Install Bubblejail
 RUN wget https://copr.fedorainfracloud.org/coprs/secureblue/bubblejail/repo/fedora-$(rpm -E %fedora)/secureblue-bubblejail-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_secureblue-bubblejail.repo && \
