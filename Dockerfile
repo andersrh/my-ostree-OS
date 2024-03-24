@@ -54,9 +54,6 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 # Install Gwenview on host for full support for image formats such as HEIC
 RUN rpm-ostree install gwenview
 
-# Install ananicy-cpp
-RUN rpm-ostree install ananicy-cpp ananicy-cpp-rules
-
 # Install system76-scheduler
 RUN rpm-ostree install system76-scheduler
 
