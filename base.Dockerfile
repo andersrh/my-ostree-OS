@@ -24,7 +24,7 @@ RUN rpm-ostree install glibc.i686
 RUN rpm-ostree override replace --experimental --from repo=fedora-clang pipewire pipewire-libs pipewire-pulseaudio pipewire-alsa pipewire-utils pipewire-gstreamer pipewire-jack-audio-connection-kit pipewire-jack-audio-connection-kit-libs
 
 # install nonfree codecs
-RUN rpm-ostree override remove libavcodec-free libavfilter-free libavformat-free libavutil-free libpostproc-free libswresample-free libswscale-free --install libavcodec-freeworld
+RUN rpm-ostree override remove libavcodec-free libavfilter-free libavformat-free libavutil-free libpostproc-free libswresample-free libswscale-free libavdevice-free ffmpeg-free --install libavcodec-freeworld
 
 # Install HEIC support for Gwenview and Dolphin (and potentially other applications)
 RUN rpm-ostree install libheif-freeworld
@@ -36,4 +36,4 @@ RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfra
 RUN rpm-ostree override replace --experimental --from repo=mesa-clang-i386 mesa-dri-drivers.i686
 RUN rpm-ostree install mesa-filesystem.i686 mesa-libEGL.i686 mesa-libGL.i686 mesa-libgbm.i686 mesa-libglapi.i686 mesa-vulkan-drivers.i686
 
-RUN rpm-ostree install ffmpeg ffmpeg-libs intel-media-driver pipewire-codec-aptx libva-intel-driver libva-utils
+RUN rpm-ostree install ffmpeg ffmpeg-libs libavdevice intel-media-driver pipewire-codec-aptx libva-intel-driver libva-utils
