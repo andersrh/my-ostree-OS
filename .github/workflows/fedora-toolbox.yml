@@ -6,8 +6,8 @@ name: fedora-toolbox
 # documentation.
 
 on:
-  schedule:
-    - cron: '0 5 * * 6'  # 5 am on Saturdays
+#  schedule:
+#    - cron: '0 5 * * 6'  # 5 am on Saturdays
   push:
     paths:
         - 'containers/fedora-toolbox/base-gui.Dockerfile'
