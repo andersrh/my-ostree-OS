@@ -52,6 +52,8 @@ rpm-ostree install bubblejail
 
 # override and upgrade libbpf
 RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:bieszczaders:kernel-cachyos-addons libbpf
+# enable scx.service
+RUN systemctl enable scx.service
 
 # Copy config files
 COPY etc /etc
