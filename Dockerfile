@@ -53,6 +53,9 @@ RUN rpm-ostree install system76-scheduler
 RUN wget https://copr.fedorainfracloud.org/coprs/secureblue/bubblejail/repo/fedora-$(rpm -E %fedora)/secureblue-bubblejail-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_secureblue-bubblejail.repo && \
 rpm-ostree install bubblejail
 
+# override and upgrade libbpf
+RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:bieszczaders:kernel-cachyos-addons libbpf
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
