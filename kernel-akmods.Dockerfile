@@ -43,8 +43,8 @@ RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/andersrh/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/andersrh-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && cd /tmp
 
-# add bore-sysctl and uksmd
-RUN rpm-ostree install bore-sysctl uksmd
+# add bore-sysctl, uksmd and sched-ext-scx
+RUN rpm-ostree install bore-sysctl uksmd sched-ext-scx
 
 # enable systemd services
 
