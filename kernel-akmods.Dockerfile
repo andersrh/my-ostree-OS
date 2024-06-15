@@ -48,6 +48,9 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-dev/rep
 # add bore-sysctl, uksmd and sched-ext-scx
 RUN rpm-ostree install bore-sysctl uksmd sched-ext-scx
 
+# override and upgrade libbpf
+RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:bieszczaders:kernel-cachyos-addons libbpf
+
 # enable systemd services
 
 RUN systemctl enable uksmd.service
