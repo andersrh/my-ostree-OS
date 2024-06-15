@@ -46,9 +46,6 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 # Install Gwenview on host for full support for image formats such as HEIC
 RUN rpm-ostree install gwenview
 
-# Install system76-scheduler
-RUN rpm-ostree install system76-scheduler
-
 # Install Bubblejail
 RUN wget https://copr.fedorainfracloud.org/coprs/secureblue/bubblejail/repo/fedora-$(rpm -E %fedora)/secureblue-bubblejail-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_secureblue-bubblejail.repo && \
 rpm-ostree install bubblejail
