@@ -54,6 +54,7 @@ RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfra
 # enable systemd services
 
 RUN systemctl enable uksmd.service
+RUN systemctl enable scx.service
 
 COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 
