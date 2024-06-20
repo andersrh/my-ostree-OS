@@ -11,7 +11,7 @@ ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_andersrh-my-ostree-os.repo && cd /tmp && \
-rpm-ostree install ksshaskpass cronie distrobox fish flatpak-builder libcap-ng-devel libvirt-daemon-driver-lxc libvirt-daemon-lxc lld nvtop procps-ng-devel seadrive-gui virt-manager kerver pulseaudio-utils hfsplus-tools VirtualBox
+rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui kerver pulseaudio-utils hfsplus-tools VirtualBox
 
 # Install TeamViewer
 RUN mkdir /var/opt && rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && \
@@ -45,10 +45,6 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 
 # Install Gwenview on host for full support for image formats such as HEIC
 RUN rpm-ostree install gwenview
-
-# Install Bubblejail
-RUN wget https://copr.fedorainfracloud.org/coprs/secureblue/bubblejail/repo/fedora-$(rpm -E %fedora)/secureblue-bubblejail-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_secureblue-bubblejail.repo && \
-rpm-ostree install bubblejail
 
 # Copy config files
 COPY etc /etc

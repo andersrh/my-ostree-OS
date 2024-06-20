@@ -46,7 +46,7 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/rep
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-dev/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-dev-fedora-$(rpm -E %fedora).repo && cd /tmp
 
 # add bore-sysctl, uksmd and sched-ext-scx
-RUN rpm-ostree install bore-sysctl uksmd sched-ext-scx
+RUN rpm-ostree install bore-sysctl uksmd sched-ext-scx libcap-ng-devel procps-ng-devel
 
 # override and upgrade libbpf
 RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:bieszczaders:kernel-cachyos-addons libbpf
