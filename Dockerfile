@@ -13,10 +13,6 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 RUN wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_andersrh-my-ostree-os.repo && cd /tmp && \
 rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui kerver pulseaudio-utils hfsplus-tools VirtualBox
 
-# Install TeamViewer
-RUN mkdir /var/opt && rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && \
-mv "/opt/teamviewer" /usr/lib/opt/
-
 # Change ZRAM max to 16GB
 RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-generator.conf
 
