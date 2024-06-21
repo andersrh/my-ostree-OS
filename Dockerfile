@@ -16,8 +16,6 @@ rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui kerv
 # Install TeamViewer
 RUN mkdir /var/opt && rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && \
 mv "/opt/teamviewer" /usr/lib/opt/
-# Disable Teamviewerd by default
-RUN systemctl disable teamviewerd
 
 # Change ZRAM max to 16GB
 RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-generator.conf
