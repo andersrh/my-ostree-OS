@@ -11,10 +11,7 @@ ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_andersrh-my-ostree-os.repo && cd /tmp && \
-rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui kerver pulseaudio-utils hfsplus-tools VirtualBox
-
-# Change ZRAM max to 16GB
-RUN sed -i 's/zram-size.*/zram-size = min(ram, 16384)/' /usr/lib/systemd/zram-generator.conf
+rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui pulseaudio-utils hfsplus-tools VirtualBox
 
 # Add docker-compose dependency for "podman compose" command
 RUN rpm-ostree install docker-compose
