@@ -62,7 +62,7 @@ COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 # Enable cliwrap.
 RUN rpm-ostree cliwrap install-to-root / && \
 # Replace the kernel, kernel-core and kernel-modules packages.
-rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra --install kernel-cachyos-lto
+rpm-ostree override remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-headers --install kernel-cachyos-lto
 
 # install kernel headers
 RUN rpm-ostree install kernel-cachyos-lto-headers
