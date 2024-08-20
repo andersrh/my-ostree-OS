@@ -1,0 +1,22 @@
+[copr:copr.fedorainfracloud.org:andersrh:my-ostree-os]
+name=Copr repo for my-ostree-os owned by andersrh
+baseurl=https://download.copr.fedorainfracloud.org/results/andersrh/my-ostree-os/fedora-$releasever-$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/andersrh/my-ostree-os/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+
+[copr:copr.fedorainfracloud.org:andersrh:my-ostree-os:ml]
+name=Copr repo for my-ostree-os owned by andersrh (i386)
+baseurl=https://download.copr.fedorainfracloud.org/results/andersrh/my-ostree-os/fedora-$releasever-i386/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/andersrh/my-ostree-os/pubkey.gpg
+repo_gpgcheck=0
+cost=1100
+enabled=1
+enabled_metadata=1
