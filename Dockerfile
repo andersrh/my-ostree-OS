@@ -10,7 +10,7 @@ ARG CACHEBUST=4
 ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
-RUN wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_andersrh-my-ostree-os.repo && cd /tmp && \
+RUN cd /tmp && \
 rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui pulseaudio-utils hfsplus-tools VirtualBox
 
 # Add docker-compose dependency for "podman compose" command
