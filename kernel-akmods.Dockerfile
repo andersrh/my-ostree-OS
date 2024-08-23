@@ -45,8 +45,8 @@ wget https://copr.fedorainfracloud.org/coprs/andersrh/kernel-cachyos/repo/fedora
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
 cd /tmp
 
-# add cachyos-settings, uksmd and scx-scheds
-RUN rpm-ostree install uksmd scx-scheds libcap-ng-devel procps-ng-devel
+# add cachyos-settings, uksmd and scx-scheds-git
+RUN rpm-ostree install uksmd scx-scheds-git libcap-ng-devel procps-ng-devel
 RUN rpm-ostree override remove zram-generator-defaults --install cachyos-settings
 
 # override and upgrade libbpf
