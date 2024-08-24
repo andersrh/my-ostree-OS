@@ -48,11 +48,6 @@ cd /tmp
 # override and upgrade libbpf
 RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:bieszczaders:kernel-cachyos-addons libbpf
 
-# enable systemd services
-
-RUN systemctl enable uksmd.service
-RUN systemctl enable scx.service
-
 COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 
 COPY install_cachyos_kernel.sh /tmp

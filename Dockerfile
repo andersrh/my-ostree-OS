@@ -41,6 +41,11 @@ RUN rpm-ostree install gwenview
 RUN rpm-ostree install uksmd scx-scheds-git libcap-ng-devel procps-ng-devel
 RUN rpm-ostree override remove zram-generator-defaults --install cachyos-settings
 
+# enable systemd services
+
+RUN systemctl enable uksmd.service
+RUN systemctl enable scx.service
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
