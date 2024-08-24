@@ -37,6 +37,10 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 # Install Gwenview on host for full support for image formats such as HEIC
 RUN rpm-ostree install gwenview
 
+# add cachyos-settings, uksmd and scx-scheds-git
+RUN rpm-ostree install uksmd scx-scheds-git libcap-ng-devel procps-ng-devel
+RUN rpm-ostree override remove zram-generator-defaults --install cachyos-settings
+
 # Copy config files
 COPY etc /etc
 # Copy /usr
