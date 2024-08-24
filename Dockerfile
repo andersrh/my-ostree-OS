@@ -11,7 +11,7 @@ ARG IMAGE_NAME="${IMAGE_NAME}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN cd /tmp && \
-rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui pulseaudio-utils hfsplus-tools VirtualBox
+rpm-ostree cleanup -m && rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui pulseaudio-utils hfsplus-tools VirtualBox
 
 # Add docker-compose dependency for "podman compose" command
 RUN rpm-ostree install docker-compose
