@@ -23,7 +23,7 @@ RUN ln -s /usr/bin/podman /usr/bin/docker
 RUN sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/sysconfig/selinux && sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/selinux/config
 
 # Xwayland clang
-RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/trixieua/mutter-patched/repo/fedora-$(rpm -E %fedora)/trixieua-mutter-patched-fedora-$(rpm -E %fedora).repo && rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:trixieua:mutter-patched xorg-x11-server-Xwayland
+RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:andersrh:my-ostree-os xorg-x11-server-Xwayland
 
 # add Haruna media player to host for better VAAPI performance
 RUN rpm-ostree install haruna
