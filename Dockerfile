@@ -1,14 +1,8 @@
-ARG IMAGE_NAME="${IMAGE_NAME:-kinoite}"
-ARG SOURCE_IMAGE="${SOURCE_IMAGE:-kinoite}"
-ARG BASE_IMAGE="quay.io/fedora-ostree-desktops/${SOURCE_IMAGE}"
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-39}"
 
-FROM quay.io/fedora-ostree-desktops/kinoite:39 AS base
+
+FROM quay.io/fedora-ostree-desktops/kinoite:40 AS base
 
 ARG CACHEBUST=2
-
-ARG IMAGE_NAME="${IMAGE_NAME}"
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 
 COPY repo/*.repo /etc/yum.repos.d/
@@ -19,9 +13,6 @@ RUN rpm-ostree install https://download1.rpmfusion.org/free/fedora/rpmfusion-fre
 # 32-bit dependencies for the Nvidia driver.
 RUN rpm-ostree install glibc.i686
 
-# pipewire clang
-RUN rpm-ostree override replace --experimental --from repo=fedora-clang pipewire pipewire-libs pipewire-pulseaudio pipewire-alsa pipewire-utils pipewire-gstreamer pipewire-jack-audio-connection-kit pipewire-jack-audio-connection-kit-libs
-
 # install nonfree codecs
 RUN rpm-ostree override remove libavcodec-free libavfilter-free libavformat-free libavutil-free libpostproc-free libswresample-free libswscale-free libavdevice-free ffmpeg-free --install libavcodec-freeworld
 
@@ -29,15 +20,15 @@ RUN rpm-ostree override remove libavcodec-free libavfilter-free libavformat-free
 RUN rpm-ostree install libheif-freeworld
 
 # Mesa clang
-RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:andersrh:my-ostree-os mesa-filesystem mesa-libglapi mesa-dri-drivers mesa-libgbm mesa-libEGL mesa-libGL mesa-vulkan-drivers mesa-libxatracker mesa-vdpau-drivers mesa-libOSMesa mesa-libOpenCL mesa-va-drivers libdrm
+RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:andersrh:my-ostree-os mesa-filesystem mesa-libglapi mesa-dri-drivers mesa-libgbm mesa-libEGL mesa-libGL mesa-vulkan-drivers mesa-libxatracker mesa-vdpau-drivers mesa-libOSMesa mesa-libOpenCL mesa-va-drivers
 
 # 32-bit dependencies for the Nvidia driver.
 RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:andersrh:my-ostree-os:ml mesa-dri-drivers.i686
-RUN rpm-ostree install mesa-filesystem.i686 mesa-libEGL.i686 mesa-libGL.i686 mesa-libgbm.i686 mesa-libglapi.i686 mesa-vulkan-drivers.i686 libdrm.i686
+RUN rpm-ostree install mesa-filesystem.i686 mesa-libEGL.i686 mesa-libGL.i686 mesa-libgbm.i686 mesa-libglapi.i686 mesa-vulkan-drivers.i686
 
 RUN rpm-ostree install ffmpeg ffmpeg-libs libavdevice intel-media-driver pipewire-codec-aptx libva-intel-driver libva-utils
 
-FROM fedora:39 AS akmods-builder
+FROM fedora:40 AS akmods-builder
 
 RUN dnf -y update && dnf -y install wget
 
@@ -60,14 +51,6 @@ RUN /tmp/akmods.sh
 
 FROM base AS kernel
 
-ARG IMAGE_NAME="${IMAGE_NAME}"
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
-
-COPY --from=ghcr.io/ublue-os/akmods-nvidia:39-535 /rpms /tmp/akmods-rpms
-
-RUN rpm-ostree install \
-    /tmp/akmods-rpms/ublue-os/ublue-os-nvidia-addons-*.rpm
-
 RUN mkdir /tmp/nvidia
 
 COPY install-nvidia.sh /tmp/install-nvidia.sh
@@ -83,6 +66,9 @@ cd /tmp
 RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:bieszczaders:kernel-cachyos-addons libbpf
 
 COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
+
+# install binutils to get strip command
+RUN rpm-ostree install binutils
 
 COPY install_cachyos_kernel.sh /tmp
 # Enable cliwrap.
@@ -102,13 +88,11 @@ RUN rpm-ostree install \
     nvidia-container-toolkit supergfxctl supergfxctl-plasmoid
 
 RUN mv /etc/nvidia-container-runtime/config.toml{,.orig}
-RUN cp /etc/nvidia-container-runtime/config{-rootless,}.toml
 
 RUN systemctl enable supergfxd.service
 
 RUN rpm-ostree uninstall xorg-x11-drv-nvidia-power
 
-RUN semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
 RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
 RUN ln -s /etc/alternatives/ld /usr/bin/ld
 
@@ -123,8 +107,6 @@ ostree container commit
 FROM kernel AS os
 
 ARG CACHEBUST=5
-ARG IMAGE_NAME="${IMAGE_NAME}"
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 RUN cd /tmp && \
 rpm-ostree cleanup -m && rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui pulseaudio-utils hfsplus-tools VirtualBox
@@ -143,9 +125,6 @@ RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfra
 
 # add Haruna media player to host for better VAAPI performance
 RUN rpm-ostree install haruna
-
-# software to be replaced with clang version
-RUN rpm-ostree override replace --experimental --from repo=fedora-clang podman tar kpipewire NetworkManager-libnm NetworkManager NetworkManager-vpnc NetworkManager-wwan NetworkManager-wifi NetworkManager-ppp NetworkManager-bluetooth NetworkManager-config-connectivity-fedora wayland-utils xz xz-libs gzip bzip2-libs bzip2 libzip libarchive rsync libva dbus-broker dbus-glib wget dbusmenu-qt
 
 # Install AppImageLauncher
 RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/download/continuous/appimagelauncher-2.2.0-gha111.d9d4c73.x86_64.rpm
