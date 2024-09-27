@@ -30,6 +30,9 @@ RUN rpm-ostree install ffmpeg ffmpeg-libs libavdevice intel-media-driver pipewir
 
 FROM fedora:40 AS akmods-builder
 
+# Get list of kernels from CachyOS LTO repo. If the list has been updated, then akmods will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
+ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=bieszczaders&projectname=kernel-cachyos-lto&packagename=kernel-cachyos-lto" /tmp/builds.txt
+
 RUN dnf -y update && dnf -y install wget
 
 RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
