@@ -142,6 +142,8 @@ RUN rpm-ostree override remove zram-generator-defaults --install cachyos-setting
 # Install TeamViewer
 RUN mkdir /var/opt && rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && \
 mv "/opt/teamviewer" /usr/lib/opt/
+# Disable Teamviewerd by default
+RUN systemctl disable teamviewerd
 
 # enable systemd services
 
