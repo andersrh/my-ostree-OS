@@ -1,7 +1,0 @@
-#!/bin/sh
-
-systemctl enable --now /opt/teamviewer/tv_bin/script/teamviewerd.service
-
-/usr/bin/teamviewer -platform xcb
-
-systemctl disable --now teamviewerd
