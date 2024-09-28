@@ -139,6 +139,10 @@ RUN rpm-ostree install gwenview
 RUN rpm-ostree install uksmd scx-scheds-git libcap-ng-devel procps-ng-devel
 RUN rpm-ostree override remove zram-generator-defaults --install cachyos-settings
 
+# Install TeamViewer
+RUN mkdir /var/opt && rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && \
+mv "/opt/teamviewer" /usr/lib/opt/
+
 # enable systemd services
 
 RUN systemctl enable uksmd.service
