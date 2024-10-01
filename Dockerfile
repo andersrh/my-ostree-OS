@@ -58,6 +58,8 @@ RUN mkdir /tmp/nvidia
 
 COPY install-nvidia.sh /tmp/install-nvidia.sh
 
+COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
+
 RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo
 
 RUN cd /etc/yum.repos.d/ && \
@@ -67,8 +69,6 @@ cd /tmp
 
 # override and upgrade libbpf
 RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:bieszczaders:kernel-cachyos-addons libbpf
-
-COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
 
 # install binutils to get strip command
 RUN rpm-ostree install binutils
