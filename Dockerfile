@@ -143,6 +143,9 @@ RUN rpm-ostree override remove zram-generator-defaults --install cachyos-setting
 RUN mkdir /var/opt && rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && \
 mv "/opt/teamviewer" /usr/lib/opt/
 
+# Install Waydroid
+RUN rpm-ostree install waydroid
+
 # enable systemd services
 
 RUN systemctl enable uksmd.service
