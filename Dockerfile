@@ -1,4 +1,26 @@
+FROM fedora:40 AS akmods-builder
 
+# Get list of kernels from CachyOS LTO repo. If the list has been updated, then akmods will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
+ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=bieszczaders&projectname=kernel-cachyos-lto&packagename=kernel-cachyos-lto" /tmp/builds.txt
+
+RUN dnf -y update && dnf -y install wget
+
+RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+# Update cachebust in case a rebuild is required without usage of cache.
+ARG CACHEBUST=11
+
+RUN cd /etc/yum.repos.d/ && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
+wget https://copr.fedorainfracloud.org/coprs/andersrh/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/andersrh-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
+wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && \
+cd /tmp
+
+RUN dnf -y install kernel-cachyos-lto kernel-cachyos-lto-headers kernel-cachyos-lto-devel kernel-cachyos-lto-modules kernel-cachyos-lto-core kernel-cachyos-lto-devel-matched
+RUN dnf -y install akmod-nvidia akmod-VirtualBox
+
+COPY akmods.sh /tmp/akmods.sh
+RUN /tmp/akmods.sh
 
 FROM quay.io/fedora-ostree-desktops/kinoite:40 AS base
 
@@ -27,30 +49,6 @@ RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfra
 RUN rpm-ostree install mesa-filesystem.i686 mesa-libEGL.i686 mesa-libGL.i686 mesa-libgbm.i686 mesa-libglapi.i686 mesa-vulkan-drivers.i686
 
 RUN rpm-ostree install ffmpeg ffmpeg-libs libavdevice intel-media-driver pipewire-codec-aptx libva-intel-driver libva-utils
-
-FROM fedora:40 AS akmods-builder
-
-# Get list of kernels from CachyOS LTO repo. If the list has been updated, then akmods will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
-ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=bieszczaders&projectname=kernel-cachyos-lto&packagename=kernel-cachyos-lto" /tmp/builds.txt
-
-RUN dnf -y update && dnf -y install wget
-
-RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
-# Update cachebust in case a rebuild is required without usage of cache.
-ARG CACHEBUST=11
-
-RUN cd /etc/yum.repos.d/ && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
-wget https://copr.fedorainfracloud.org/coprs/andersrh/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/andersrh-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
-wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && \
-cd /tmp
-
-RUN dnf -y install kernel-cachyos-lto kernel-cachyos-lto-headers kernel-cachyos-lto-devel kernel-cachyos-lto-modules kernel-cachyos-lto-core kernel-cachyos-lto-devel-matched
-RUN dnf -y install akmod-nvidia akmod-VirtualBox
-
-COPY akmods.sh /tmp/akmods.sh
-RUN /tmp/akmods.sh
 
 FROM base AS kernel
 
