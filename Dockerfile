@@ -144,6 +144,9 @@ mv "/opt/teamviewer" /usr/lib/opt/
 # Install Waydroid
 RUN rpm-ostree install waydroid
 
+# Install virt-manager and LXC driver
+RUN rpm-ostree install virt-manager libvirt-daemon-driver-lxc libvirt-daemon-lxc
+
 # enable systemd services
 
 RUN systemctl enable uksmd.service
