@@ -2,6 +2,8 @@
 
 FROM ghcr.io/andersrh/my-ostree-os:main AS builder
 
+RUN rm -f /etc/yum.repos.d/teamviewer.repo
+
 RUN rpm-ostree cleanup -m && rpm-ostree install virt-manager libvirt-daemon-driver-lxc libvirt-daemon-lxc
 
 # Clear cache, /var and /tmp and commit ostree
