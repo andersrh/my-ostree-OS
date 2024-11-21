@@ -17,7 +17,7 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 cd /tmp
 
 RUN dnf -y install kernel-cachyos-lto kernel-cachyos-lto-headers kernel-cachyos-lto-devel kernel-cachyos-lto-modules kernel-cachyos-lto-core kernel-cachyos-lto-devel-matched
-RUN dnf -y install akmod-nvidia akmod-VirtualBox
+RUN dnf -y install akmod-VirtualBox
 
 COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh
@@ -78,7 +78,7 @@ RUN rpm-ostree cliwrap install-to-root / && \
 /tmp/install_cachyos_kernel.sh
 
 # install kernel headers
-RUN rpm-ostree install kernel-cachyos-lto-headers
+RUN rpm-ostree install kernel-cachyos-lto-headers kernel-cachyos-lto-nvidia-open
 
 # install akmods
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh
