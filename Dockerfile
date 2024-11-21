@@ -17,7 +17,7 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/
 cd /tmp
 
 RUN dnf -y install kernel-cachyos-lto kernel-cachyos-lto-headers kernel-cachyos-lto-devel kernel-cachyos-lto-modules kernel-cachyos-lto-core kernel-cachyos-lto-devel-matched
-RUN dnf -y install akmod-nvidia akmod-VirtualBox
+RUN dnf -y install https://koji.rpmfusion.org/kojifiles/packages/nvidia-kmod/560.35.03/2.fc42/x86_64/akmod-nvidia-560.35.03-2.fc42.x86_64.rpm akmod-VirtualBox
 
 COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh
