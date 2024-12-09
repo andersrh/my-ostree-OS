@@ -92,7 +92,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}, ${{ steps.meta.outputs.tags }}-40, ${{ steps.meta.outputs.tags }}-40.${{ steps.date.outputs.date }}
+          tags: ${{ steps.meta.outputs.tags }}, ${{ steps.meta.outputs.tags }}-41, ${{ steps.meta.outputs.tags }}-41.${{ steps.date.outputs.date }}
        #   labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

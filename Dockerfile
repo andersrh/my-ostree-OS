@@ -1,4 +1,4 @@
-FROM fedora:40 AS akmods-builder
+FROM fedora:41 AS akmods-builder
 
 # Get list of kernels from CachyOS LTO repo. If the list has been updated, then akmods will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
 ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=bieszczaders&projectname=kernel-cachyos-lto&packagename=kernel-cachyos-lto" /tmp/builds.txt
@@ -22,7 +22,7 @@ RUN dnf -y install akmod-nvidia akmod-VirtualBox
 COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh
 
-FROM quay.io/fedora-ostree-desktops/kinoite:40 AS base
+FROM quay.io/fedora-ostree-desktops/kinoite:41 AS base
 
 ARG CACHEBUST=2
 
@@ -134,7 +134,7 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 RUN rpm-ostree install gwenview
 
 # add cachyos-settings, uksmd and scx-scheds-git
-RUN rpm-ostree install uksmd scx-scheds-git libcap-ng-devel procps-ng-devel
+RUN rpm-ostree install scx-scheds-git libcap-ng-devel procps-ng-devel
 RUN rpm-ostree override remove zram-generator-defaults --install cachyos-settings
 
 # Install TeamViewer
@@ -148,8 +148,6 @@ RUN rpm-ostree install waydroid
 RUN rpm-ostree install virt-manager libvirt-daemon-driver-lxc libvirt-daemon-lxc
 
 # enable systemd services
-
-RUN systemctl enable uksmd.service
 RUN systemctl enable scx.service
 
 # Copy config files
