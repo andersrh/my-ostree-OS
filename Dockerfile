@@ -109,9 +109,6 @@ rpm-ostree cleanup -m && rpm-ostree install ksshaskpass cronie distrobox fish ll
 # Add docker-compose dependency for "podman compose" command
 RUN rpm-ostree install docker-compose
 
-# Add docker -> podman alias for docker-compose to work properly
-RUN ln -s /usr/bin/podman /usr/bin/docker
-
 # Disable SELinux
 RUN sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/sysconfig/selinux && sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/selinux/config
 
