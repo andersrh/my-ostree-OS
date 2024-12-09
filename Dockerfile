@@ -65,9 +65,6 @@ wget https://copr.fedorainfracloud.org/coprs/andersrh/kernel-cachyos/repo/fedora
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
 cd /tmp
 
-# override and upgrade libbpf
-RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:bieszczaders:kernel-cachyos-addons libbpf
-
 # install binutils to get strip command
 RUN rpm-ostree install binutils
 
@@ -133,8 +130,8 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 # Install Gwenview on host for full support for image formats such as HEIC
 RUN rpm-ostree install gwenview
 
-# add cachyos-settings, uksmd and scx-scheds-git
-RUN rpm-ostree install scx-scheds-git libcap-ng-devel procps-ng-devel
+# add cachyos-settings and scx-scheds-git
+RUN rpm-ostree install scx-scheds-git
 RUN rpm-ostree override remove zram-generator-defaults --install cachyos-settings
 
 # Install TeamViewer
