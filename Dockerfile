@@ -91,9 +91,6 @@ RUN systemctl enable supergfxd.service
 
 RUN rpm-ostree uninstall xorg-x11-drv-nvidia-power
 
-RUN ln -s /usr/bin/ld.bfd /etc/alternatives/ld
-RUN ln -s /etc/alternatives/ld /usr/bin/ld
-
 # install Nvidia software
 RUN rpm-ostree install nvidia-vaapi-driver nvidia-persistenced opencl-filesystem
 
