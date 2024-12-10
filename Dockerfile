@@ -106,8 +106,8 @@ ARG CACHEBUST=5
 RUN cd /tmp && \
 rpm-ostree cleanup -m && rpm-ostree install ksshaskpass cronie distrobox fish lld nvtop seadrive-gui pulseaudio-utils hfsplus-tools VirtualBox
 
-# Add docker-compose dependency for "podman compose" command
-RUN rpm-ostree install docker-compose
+# Add podman-compose dependency for "podman compose" command
+RUN rpm-ostree install podman-compose
 
 # Disable SELinux
 RUN sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/sysconfig/selinux && sed -i "s/^SELINUX=.*$/SELINUX=permissive/g" /etc/selinux/config
