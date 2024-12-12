@@ -138,8 +138,8 @@ RUN rpm-ostree install waydroid
 # Install virt-manager and LXC driver
 RUN rpm-ostree install virt-manager libvirt-daemon-driver-lxc libvirt-daemon-lxc
 
-# enable systemd services
-RUN systemctl enable scx.service
+# disable scx service
+RUN systemctl disable scx.service
 
 # Copy config files
 COPY etc /etc
