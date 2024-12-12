@@ -138,6 +138,9 @@ RUN rpm-ostree install waydroid
 # Install virt-manager and LXC driver
 RUN rpm-ostree install virt-manager libvirt-daemon-driver-lxc libvirt-daemon-lxc
 
+# Install VDO tools and Bees
+RUN rpm-ostree install vdo bees
+
 # disable scx service
 RUN systemctl disable scx.service
 
