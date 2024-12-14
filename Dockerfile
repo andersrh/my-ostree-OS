@@ -141,6 +141,9 @@ RUN rpm-ostree install virt-manager libvirt-daemon-driver-lxc libvirt-daemon-lxc
 # Install VDO tools and Bees
 RUN rpm-ostree install vdo bees
 
+# Install ZFS
+RUN rpm -e --nodeps zfs-fuse && rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-6$(rpm --eval "%{dist}").noarch.rpm && rpm-ostree install kernel-cachyos-lto-devel && rpm-ostree install zfs --uninstall zfs-fuse
+
 # disable scx service
 RUN systemctl disable scx.service
 
