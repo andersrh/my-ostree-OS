@@ -143,6 +143,8 @@ RUN rpm-ostree install vdo bees
 
 # Install ZFS
 RUN rpm -e --nodeps zfs-fuse && rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-6$(rpm --eval "%{dist}").noarch.rpm && rpm-ostree install kernel-cachyos-lto-devel && rpm-ostree install zfs --uninstall zfs-fuse
+# Build ZFS module manually
+RUN dkms install zfs/$(ls /usr/src/ | grep zfs- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel-cachyos-lto)
 
 # disable scx service
 RUN systemctl disable scx.service
