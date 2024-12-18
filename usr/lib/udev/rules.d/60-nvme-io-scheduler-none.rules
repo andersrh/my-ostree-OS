@@ -1,3 +1,0 @@
-ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", \
-  KERNEL=="nvme*[0-9]", \
-  ATTR{queue/scheduler}="none"
