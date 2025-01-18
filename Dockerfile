@@ -127,10 +127,6 @@ RUN rpm-ostree install gwenview
 RUN rpm-ostree install scx-scheds
 RUN rpm-ostree override remove zram-generator-defaults --install cachyos-settings
 
-# Install TeamViewer
-RUN mkdir /var/opt && rpm-ostree install https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm && \
-mv "/opt/teamviewer" /usr/lib/opt/ && rm -f /etc/yum.repos.d/teamviewer.repo
-
 # Install Waydroid
 RUN rpm-ostree install waydroid
 
