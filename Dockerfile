@@ -1,5 +1,8 @@
 FROM fedora:41 AS akmods-builder
 
+ARG KERNEL=kernel-cachyos-lts-lto
+ENV KERNEL=${KERNEL}
+
 # Get list of kernels from CachyOS LTO repo. If the list has been updated, then akmods will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
 ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=bieszczaders&projectname=kernel-cachyos-lto&packagename=kernel-cachyos-lto" /tmp/builds.txt
 
@@ -16,11 +19,11 @@ wget https://copr.fedorainfracloud.org/coprs/andersrh/kernel-cachyos/repo/fedora
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && \
 cd /tmp
 
-RUN dnf -y install kernel-cachyos-lto kernel-cachyos-lto-devel kernel-cachyos-lto-modules kernel-cachyos-lto-core kernel-cachyos-lto-devel-matched
+RUN dnf -y install ${KERNEL} ${KERNEL}-devel ${KERNEL}-modules ${KERNEL}-core ${KERNEL}-devel-matched
 RUN dnf -y install akmod-nvidia akmod-VirtualBox
 
 COPY akmods.sh /tmp/akmods.sh
-RUN /tmp/akmods.sh
+RUN /tmp/akmods.sh ${KERNEL}
 
 FROM quay.io/fedora-ostree-desktops/kinoite:41 AS base
 
@@ -51,6 +54,9 @@ RUN rpm-ostree install ffmpeg ffmpeg-libs libavdevice intel-media-driver pipewir
 
 FROM base AS kernel
 
+ARG KERNEL=kernel-cachyos-lts-lto
+ENV KERNEL=${KERNEL}
+
 RUN mkdir /tmp/nvidia
 
 COPY install-nvidia.sh /tmp/install-nvidia.sh
@@ -71,10 +77,10 @@ COPY install_cachyos_kernel.sh /tmp
 # Enable cliwrap.
 RUN rpm-ostree cliwrap install-to-root / && \
 # Replace the kernel, kernel-core and kernel-modules packages.
-/tmp/install_cachyos_kernel.sh
+/tmp/install_cachyos_kernel.sh ${KERNEL}
 
 # install akmods
-RUN ls /tmp/nvidia && /tmp/install-nvidia.sh
+RUN ls /tmp/nvidia && /tmp/install-nvidia.sh ${KERNEL}
 
 RUN rpm-ostree install \
     xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc} \
@@ -134,10 +140,10 @@ RUN rpm-ostree install virt-manager libvirt-daemon-driver-lxc libvirt-daemon-lxc
 RUN rpm-ostree install vdo bees
 
 # Install ZFS
-RUN rpm -e --nodeps zfs-fuse && rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-6$(rpm --eval "%{dist}").noarch.rpm && rpm-ostree install kernel-cachyos-lto-devel kernel-cachyos-lto-devel-matched && rpm-ostree install zfs --uninstall zfs-fuse
+RUN rpm -e --nodeps zfs-fuse && rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-6$(rpm --eval "%{dist}").noarch.rpm && rpm-ostree install ${KERNEL}-devel ${KERNEL}-devel-matched && rpm-ostree install zfs --uninstall zfs-fuse
 
 # Build ZFS module manually
-RUN dkms install zfs/$(ls /usr/src/ | grep zfs- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel-cachyos-lto)
+RUN dkms install zfs/$(ls /usr/src/ | grep zfs- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
 
 # enable scx service
 RUN systemctl enable scx.service
