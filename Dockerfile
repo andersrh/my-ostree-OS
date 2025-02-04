@@ -1,6 +1,6 @@
 FROM fedora:41 AS akmods-builder
 
-ARG KERNEL=kernel-cachyos-lts-lto-skylake
+ARG KERNEL=kernel-cachyos-lts-lto-v3
 ENV KERNEL=${KERNEL}
 
 # Get list of kernels from CachyOS LTO repo. If the list has been updated, then akmods will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
@@ -55,7 +55,7 @@ RUN rpm-ostree install ffmpeg ffmpeg-libs libavdevice intel-media-driver pipewir
 
 FROM base AS kernel
 
-ARG KERNEL=kernel-cachyos-lts-lto-skylake
+ARG KERNEL=kernel-cachyos-lts-lto-v3
 ENV KERNEL=${KERNEL}
 
 RUN mkdir /tmp/nvidia
