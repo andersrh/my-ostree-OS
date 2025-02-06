@@ -28,7 +28,7 @@ RUN /tmp/akmods.sh ${KERNEL}
 
 FROM quay.io/fedora-ostree-desktops/kinoite:41 AS base
 
-ARG CACHEBUST=3
+ARG CACHEBUST=4
 
 COPY repo/*.repo /etc/yum.repos.d/
 
