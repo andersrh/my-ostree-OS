@@ -11,7 +11,7 @@ RUN dnf -y update && dnf -y install wget
 RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 # Update cachebust in case a rebuild is required without usage of cache.
-ARG CACHEBUST=11
+ARG CACHEBUST=12
 
 RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
