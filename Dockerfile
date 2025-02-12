@@ -123,7 +123,7 @@ RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfra
 RUN rpm-ostree install haruna
 
 # Install AppImageLauncher
-RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/download/continuous/appimagelauncher-2.2.0-gha111.d9d4c73.x86_64.rpm
+RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/download/v3.0.0-alpha-2/appimagelauncher_3.0.0-alpha-2-gha218.0146f5c_x86_64.rpm
 
 # Install Gwenview on host for full support for image formats such as HEIC
 RUN rpm-ostree install gwenview
