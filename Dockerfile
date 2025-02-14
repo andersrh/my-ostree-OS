@@ -147,6 +147,9 @@ RUN rpm -e --nodeps zfs-fuse && rpm-ostree install https://zfsonlinux.org/fedora
 # Build ZFS module manually
 RUN dkms install zfs/$(ls /usr/src/ | grep zfs- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
 
+# Install Gnome Boxes
+RUN rpm-ostree install gnome-boxes
+
 # enable scx service
 RUN systemctl enable scx.service
 
