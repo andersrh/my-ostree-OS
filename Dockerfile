@@ -44,11 +44,7 @@ RUN rpm-ostree override remove libavcodec-free libavfilter-free libavformat-free
 # Install HEIC support for Gwenview and Dolphin (and potentially other applications)
 RUN rpm-ostree install libheif-freeworld
 
-# Mesa clang
-RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:andersrh:my-ostree-os mesa-filesystem mesa-dri-drivers mesa-libgbm mesa-libEGL mesa-libGL mesa-vulkan-drivers mesa-libxatracker mesa-vdpau-drivers mesa-libOSMesa mesa-libOpenCL mesa-va-drivers
-
 # 32-bit dependencies for the Nvidia driver.
-RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:andersrh:my-ostree-os:ml mesa-dri-drivers.i686
 RUN rpm-ostree install mesa-filesystem.i686 mesa-libEGL.i686 mesa-libGL.i686 mesa-libgbm.i686 mesa-vulkan-drivers.i686
 
 RUN rpm-ostree install ffmpeg ffmpeg-libs libavdevice intel-media-driver pipewire-codec-aptx libva-intel-driver libva-utils
