@@ -153,9 +153,6 @@ RUN dkms install zfs/$(ls /usr/src/ | grep zfs- | cut -d- -f2-) -k $(rpm -q --qu
 # Install Gnome Boxes
 RUN rpm-ostree install gnome-boxes
 
-# Replace Firefox with custom built version
-RUN rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:andersrh:my-ostree-os firefox firefox-langpacks
-
 # enable scx service
 RUN systemctl enable scx.service
 
