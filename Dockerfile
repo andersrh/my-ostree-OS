@@ -30,9 +30,6 @@ FROM quay.io/fedora-ostree-desktops/kinoite:41 AS base
 
 ARG CACHEBUST=5
 
-# Temporary fix until conflict has been solved
-RUN rpm-ostree override remove OpenCL-ICD-Loader
-
 COPY repo/*.repo /etc/yum.repos.d/
 
 # install RPM-fusion
