@@ -150,6 +150,9 @@ RUN dkms install zfs/$(ls /usr/src/ | grep zfs- | cut -d- -f2-) -k $(rpm -q --qu
 # Install Gnome Boxes
 RUN rpm-ostree install gnome-boxes
 
+# Remove plocate to avoid updatedb going crazy with scanning the file system once a day
+RUN rpm-ostree override remove plocate
+
 # enable scx service
 RUN systemctl enable scx.service
 
