@@ -127,8 +127,8 @@ RUN rpm-ostree install https://github.com/TheAssassin/AppImageLauncher/releases/
 # Install Gwenview on host for full support for image formats such as HEIC
 RUN rpm-ostree install gwenview
 
-# add cachyos-settings and scx-manager
-RUN rpm-ostree install scx-manager
+# add cachyos-settings, scx-scheds and scx-manager
+RUN rpm-ostree install scx-scheds scx-manager
 RUN rpm-ostree override remove zram-generator-defaults --install cachyos-settings
 
 # Install Waydroid
