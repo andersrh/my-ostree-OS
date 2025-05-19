@@ -30,6 +30,12 @@ FROM quay.io/fedora-ostree-desktops/kinoite:41 AS base
 
 ARG CACHEBUST=5
 
+RUN mkdir /tmp/nvidia
+
+COPY install-nvidia.sh /tmp/install-nvidia.sh
+
+COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
+
 COPY repo/*.repo /etc/yum.repos.d/
 
 # install RPM-fusion
@@ -58,14 +64,7 @@ FROM base AS kernel
 ARG KERNEL=kernel-cachyos-lts-lto-skylake
 ENV KERNEL=${KERNEL}
 
-RUN mkdir /tmp/nvidia
-
-COPY install-nvidia.sh /tmp/install-nvidia.sh
-
-COPY --from=akmods-builder /var/cache/akmods/*/* /tmp/nvidia
-
-RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && \
-wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo
+RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo
 
 RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/andersrh/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/andersrh-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
