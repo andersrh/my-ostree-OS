@@ -85,7 +85,7 @@ RUN rpm-ostree cliwrap install-to-root / && \
 # install akmods
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh ${KERNEL}
 # Install Negativo17 Nvidia driver
-RUN rpm-ostree install dkms-nvidia nvidia-driver ${KERNEL}-devel ${KERNEL}-devel-matched
+RUN rpm-ostree install dkms-nvidia nvidia-driver ${KERNEL}-devel ${KERNEL}-devel-matched zstd
 RUN sed -i -e 's/kernel-open$/kernel/g' /etc/nvidia/kernel.conf
 RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
 
