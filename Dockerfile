@@ -18,10 +18,11 @@ wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/rep
 wget https://copr.fedorainfracloud.org/coprs/andersrh/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/andersrh-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/andersrh/my-ostree-os/repo/fedora-$(rpm -E %fedora)/andersrh-my-ostree-os-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo && \
+wget https://negativo17.org/repos/fedora-nvidia.repo && \
 cd /tmp
 
 RUN dnf -y install ${KERNEL} ${KERNEL}-devel ${KERNEL}-modules ${KERNEL}-core ${KERNEL}-devel-matched
-RUN dnf -y install akmod-nvidia akmod-VirtualBox
+RUN dnf -y install akmod-VirtualBox
 
 COPY akmods.sh /tmp/akmods.sh
 RUN /tmp/akmods.sh ${KERNEL}
@@ -69,6 +70,7 @@ RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/bieszcz
 RUN cd /etc/yum.repos.d/ && \
 wget https://copr.fedorainfracloud.org/coprs/andersrh/kernel-cachyos/repo/fedora-$(rpm -E %fedora)/andersrh-kernel-cachyos-fedora-$(rpm -E %fedora).repo && \
 wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-lto/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-lto-fedora-$(rpm -E %fedora).repo && \
+wget https://negativo17.org/repos/fedora-nvidia.repo && \
 cd /tmp
 
 # install binutils to get strip command
@@ -82,17 +84,16 @@ RUN rpm-ostree cliwrap install-to-root / && \
 
 # install akmods
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh ${KERNEL}
+# Install Negativo17 Nvidia driver
+RUN rpm-ostree install dkms-nvidia nvidia-driver ${KERNEL}-devel ${KERNEL}-devel-matched
+RUN sed -i -e 's/kernel-open$/kernel/g' /etc/nvidia/kernel.conf
+RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
 
-RUN rpm-ostree install \
-    xorg-x11-drv-nvidia{,-cuda,-devel,-kmodsrc} \
-    xorg-x11-drv-nvidia-libs.i686 \
-    nvidia-container-toolkit supergfxctl supergfxctl-plasmoid
+RUN rpm-ostree install nvidia-container-toolkit supergfxctl supergfxctl-plasmoid
 
 RUN mv /etc/nvidia-container-runtime/config.toml{,.orig}
 
 RUN systemctl enable supergfxd.service
-
-RUN rpm-ostree uninstall xorg-x11-drv-nvidia-power
 
 # install Nvidia software
 RUN rpm-ostree install nvidia-vaapi-driver nvidia-persistenced opencl-filesystem
@@ -141,7 +142,7 @@ RUN rpm-ostree install virt-manager libvirt-daemon-driver-lxc libvirt-daemon-lxc
 RUN rpm-ostree install vdo bees
 
 # Install ZFS
-RUN rpm -e --nodeps zfs-fuse && rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-6$(rpm --eval "%{dist}").noarch.rpm && rpm-ostree install ${KERNEL}-devel ${KERNEL}-devel-matched && rpm-ostree install zfs --uninstall zfs-fuse
+RUN rpm -e --nodeps zfs-fuse && rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-6$(rpm --eval "%{dist}").noarch.rpm && rpm-ostree install zfs --uninstall zfs-fuse
 
 # Build ZFS module manually
 RUN dkms install zfs/$(ls /usr/src/ | grep zfs- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
