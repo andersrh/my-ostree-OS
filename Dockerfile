@@ -83,6 +83,7 @@ RUN rpm-ostree cliwrap install-to-root / && \
 /tmp/install_cachyos_kernel.sh ${KERNEL}
 
 # install akmods
+RUN cat /tmp/nvidia/7.1.8-1-for-6.12.32-cachylts4.lto.skylake.fc41.x86_64.failed.log
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh ${KERNEL}
 # Install Negativo17 Nvidia driver
 RUN rpm-ostree install dkms-nvidia nvidia-driver ${KERNEL}-devel ${KERNEL}-devel-matched zstd
