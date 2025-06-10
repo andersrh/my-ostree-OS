@@ -6,7 +6,8 @@ ENV KERNEL=${KERNEL}
 # Get list of kernels from CachyOS LTO repo. If the list has been updated, then akmods will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
 ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel-cachyos-lts-lto-skylake" /tmp/builds.txt
 
-RUN dnf -y update && dnf -y install wget
+# Install necessary tools to build kernel modules
+RUN dnf -y update && dnf -y install wget clang polly
 
 RUN dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
@@ -76,6 +77,9 @@ cd /tmp
 # install binutils to get strip command
 RUN rpm-ostree install binutils
 
+# Install Clang and Polly so kernel modules can be built
+RUN rpm-ostree install clang polly
+
 COPY install_cachyos_kernel.sh /tmp
 # Enable cliwrap.
 RUN rpm-ostree cliwrap install-to-root / && \
@@ -83,7 +87,6 @@ RUN rpm-ostree cliwrap install-to-root / && \
 /tmp/install_cachyos_kernel.sh ${KERNEL}
 
 # install akmods
-RUN cat /tmp/nvidia/7.1.8-1-for-6.12.32-cachylts4.lto.skylake.fc41.x86_64.failed.log
 RUN ls /tmp/nvidia && /tmp/install-nvidia.sh ${KERNEL}
 # Install Negativo17 Nvidia driver
 RUN rpm-ostree install dkms-nvidia nvidia-driver ${KERNEL}-devel ${KERNEL}-devel-matched zstd
