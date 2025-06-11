@@ -1,10 +1,10 @@
 FROM fedora:41 AS akmods-builder
 
-ARG KERNEL=kernel-cachyos-lto-skylake
+ARG KERNEL=kernel-cachyos-lts-lto-skylake
 ENV KERNEL=${KERNEL}
 
 # Get list of kernels from CachyOS LTO repo. If the list has been updated, then akmods will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
-ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel-cachyos-lto-skylake" /tmp/builds.txt
+ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel-cachyos-lts-lto-skylake" /tmp/builds.txt
 
 # Install necessary tools to build kernel modules
 RUN dnf -y update && dnf -y install wget clang polly
@@ -63,7 +63,7 @@ RUN rpm-ostree install ffmpeg ffmpeg-libs libavdevice intel-media-driver pipewir
 
 FROM base AS kernel
 
-ARG KERNEL=kernel-cachyos-lto-skylake
+ARG KERNEL=kernel-cachyos-lts-lto-skylake
 ENV KERNEL=${KERNEL}
 
 RUN cd /etc/yum.repos.d/ && wget https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos-addons/repo/fedora-$(rpm -E %fedora)/bieszczaders-kernel-cachyos-addons-fedora-$(rpm -E %fedora).repo
