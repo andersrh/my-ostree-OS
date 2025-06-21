@@ -167,6 +167,8 @@ COPY usr /usr
 
 # Enable /nix mount service
 RUN systemctl enable mount-nix-prepare.service
+# Disable nvidia-powerd to avoid crashing when the system goes into suspension
+RUN systemctl disable nvidia-powerd
 
 # Clear cache, /var and /tmp and commit ostree
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
