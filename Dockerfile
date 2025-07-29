@@ -21,7 +21,7 @@ RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
 RUN dnf remove -y kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-tools kernel-tools-libs
 
 # Install Negativo17 Nvidia driver
-RUN rpm-ostree install dkms-nvidia nvidia-driver zstd nvidia-vaapi-driver nvidia-persistenced opencl-filesystem
+RUN dnf install -y dkms-nvidia nvidia-driver zstd nvidia-vaapi-driver nvidia-persistenced opencl-filesystem
 RUN sed -i -e 's/kernel-open$/kernel/g' /etc/nvidia/kernel.conf
 RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
 
