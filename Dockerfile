@@ -13,9 +13,6 @@ RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-
 
 RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia.repo -y 
 
-# Install HEIC support for Gwenview and Dolphin (and potentially other applications)
-RUN dnf install -y libheif-freeworld
-
 RUN dnf install -y fish distrobox nvtop gnome-boxes gwenview ffmpeg ffmpeg-libs libavdevice intel-media-driver pipewire-codec-aptx libva-intel-driver libva-utils libavcodec-freeworld
 RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm
 
