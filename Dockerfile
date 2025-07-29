@@ -13,7 +13,7 @@ RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-
 
 RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia.repo -y 
 
-RUN dnf install -y fish distrobox nvtop gwenview ffmpeg ffmpeg-libs libavdevice intel-media-driver libva-intel-driver
+RUN dnf install -y fish distrobox nvtop gwenview intel-media-driver libva-intel-driver
 RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm
 
 RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
