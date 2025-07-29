@@ -25,4 +25,5 @@ RUN dnf install -y dkms-nvidia nvidia-driver nvidia-persistenced opencl-filesyst
 RUN sed -i -e 's/kernel-open$/kernel/g' /etc/nvidia/kernel.conf
 RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
 
-RUN rm -rf /tmp/*
+RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+bootc container lint
