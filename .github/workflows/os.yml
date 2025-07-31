@@ -7,7 +7,7 @@ name: os
 
 on:
   schedule:
-    - cron: '0 5 */3 * *'  # 5 am every 3rd day
+    - cron: '0 5 * * *'  # 5 am every day
   push:
     paths:
         - 'Dockerfile'
@@ -92,7 +92,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}, ${{ steps.meta.outputs.tags }}-41, ${{ steps.meta.outputs.tags }}-41.${{ steps.date.outputs.date }}
+          tags: ${{ steps.meta.outputs.tags }}, ${{ steps.meta.outputs.tags }}-10, ${{ steps.meta.outputs.tags }}-10.${{ steps.date.outputs.date }}
        #   labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

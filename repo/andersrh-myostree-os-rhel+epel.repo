@@ -1,0 +1,11 @@
+[my-ostree-os-rhel-epel]
+name=Copr repo for my-ostree-os owned by andersrh for RHEL+EPEL
+baseurl=https://download.copr.fedorainfracloud.org/results/andersrh/my-ostree-os/rhel+epel-10-$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/andersrh/my-ostree-os/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+priority=98
