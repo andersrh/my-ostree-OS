@@ -18,6 +18,8 @@ RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia.repo 
 RUN dnf install -y fish distrobox nvtop gwenview intel-media-driver libva-intel-driver
 RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm
 
+RUN echo 'omit_drivers+=" nouveau "' | tee /etc/dracut.conf.d/blacklist-nouveau.conf
+
 RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
 
 RUN dnf remove -y kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-tools kernel-tools-libs
@@ -26,12 +28,6 @@ RUN dnf remove -y kernel kernel-core kernel-modules kernel-modules-core kernel-m
 RUN dnf install -y dkms-nvidia nvidia-driver nvidia-persistenced opencl-filesystem libva-nvidia-driver
 RUN sed -i -e 's/kernel-open$/kernel/g' /etc/nvidia/kernel.conf
 RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
-RUN echo 'omit_drivers+=" nouveau "' | tee /etc/dracut.conf.d/blacklist-nouveau.conf
-RUN dracut --regenerate-all --force
-RUN depmod -a
-
-# Allow connections to KDEConnect
-RUN firewall-cmd --permanent --zone=public --add-service=kdeconnect
 
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 bootc container lint
