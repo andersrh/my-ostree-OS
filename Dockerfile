@@ -30,5 +30,8 @@ RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -
 
 RUN dnf install -y waydroid
 
+# Remove plocate to avoid updatedb going crazy with scanning the file system once a day
+RUN dnf remove -y plocate
+
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 bootc container lint
