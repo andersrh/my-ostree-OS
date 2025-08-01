@@ -33,5 +33,7 @@ RUN dnf install -y waydroid
 # Remove plocate to avoid updatedb going crazy with scanning the file system once a day
 RUN dnf remove -y plocate
 
+RUN systemctl disable nvidia-powerd
+
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 bootc container lint
