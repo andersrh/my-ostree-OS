@@ -20,7 +20,7 @@ RUN dnf upgrade -y
 
 RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
 
-RUN dnf install -y fish distrobox nvtop gwenview intel-media-driver libva-intel-driver
+RUN dnf install -y fish distrobox nvtop intel-media-driver libva-intel-driver
 RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm
 
 # Install Negativo17 Nvidia driver
