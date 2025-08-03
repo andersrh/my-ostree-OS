@@ -38,5 +38,7 @@ RUN systemctl disable nvidia-powerd
 # Add rule to SELinux allowing modules to be loaded into custom kernel
 RUN setsebool -P domain_kernel_load_modules on
 
+COPY etc/environment /etc/environment
+
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 bootc container lint
