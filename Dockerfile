@@ -1,4 +1,4 @@
-FROM quay.io/almalinuxorg/atomic-desktop-kde:latest
+FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 
 
 ARG KERNEL=kernel-cachyos-lto-skylake
