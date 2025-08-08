@@ -8,7 +8,6 @@ ENV KERNEL=${KERNEL}
 ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel-cachyos-lto-skylake" /tmp/builds.txt
 
 RUN echo 'omit_drivers+=" nouveau "' | tee /etc/dracut.conf.d/blacklist-nouveau.conf
-COPY etc/modprobe.d/nvidia-resume_suspend.conf /etc/modprobe.d/nvidia-resume_suspend.conf
 
 COPY repo/*.repo /etc/yum.repos.d/
 RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia.repo -y
