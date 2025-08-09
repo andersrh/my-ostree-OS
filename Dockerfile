@@ -36,8 +36,6 @@ RUN dnf remove -y plocate
 # Install Mullvad VPN client
 RUN rpm -Uvh --nodeps https://mullvad.net/da/download/app/rpm/latest
 
-RUN systemctl disable nvidia-powerd
-
 # Add rule to SELinux allowing modules to be loaded into custom kernel
 RUN setsebool -P domain_kernel_load_modules on
 
