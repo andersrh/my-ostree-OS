@@ -28,7 +28,7 @@ RUN dnf install -y dkms-nvidia nvidia-driver nvidia-persistenced opencl-filesyst
 RUN sed -i -e 's/kernel-open$/kernel/g' /etc/nvidia/kernel.conf
 RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
 
-RUN dnf install -y waydroid scx-manager scx-scheds
+RUN dnf install -y waydroid scx-scheds
 
 # Remove plocate to avoid updatedb going crazy with scanning the file system once a day
 RUN dnf remove -y plocate
