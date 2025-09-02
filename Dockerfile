@@ -44,5 +44,7 @@ COPY etc/systemd/zram-generator.conf /etc/systemd/zram-generator.conf
 
 RUN cd /usr/bin && wget https://raw.githubusercontent.com/CachyOS/CachyOS-Settings/refs/heads/master/usr/bin/kerver && chmod +x kerver
 
+RUN systemctl enable scx
+
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 bootc container lint
