@@ -1,16 +1,17 @@
 FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 
 
-ARG KERNEL=kernel-cachyos-lts-lto-skylake
+ARG KERNEL=kernel-cachyos-lts-lto
 ENV KERNEL=${KERNEL}
 
 # Get list of kernels from my repo. If the list has been updated, then the image will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
-ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel-cachyos-lts-lto-skylake" /tmp/builds.txt
+ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=bieszczaders&projectname=kernel-cachyos-lto&packagename=kernel-cachyos-lts-lto" /tmp/builds.txt
 
 RUN echo 'omit_drivers+=" nouveau "' | tee /etc/dracut.conf.d/blacklist-nouveau.conf
 
 COPY repo/*.repo /etc/yum.repos.d/
 RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia.repo -y
+RUN dnf copr enable bieszczaders/kernel-cachyos-lto -y
 
 RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
 
