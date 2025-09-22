@@ -7,10 +7,7 @@ ENV KERNEL=${KERNEL}
 # Get list of kernels from my repo. If the list has been updated, then the image will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
 ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel-cachyos-lto-skylake-test" /tmp/builds.txt
 
-RUN echo 'omit_drivers+=" nouveau "' | tee /etc/dracut.conf.d/blacklist-nouveau.conf
-
 COPY repo/*.repo /etc/yum.repos.d/
-RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia.repo -y
 
 RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
 
@@ -22,11 +19,6 @@ RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-
 
 RUN dnf install -y fish distrobox nvtop intel-media-driver libva-intel-driver
 RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm
-
-# Install Negativo17 Nvidia driver
-RUN dnf install -y dkms-nvidia nvidia-driver nvidia-persistenced opencl-filesystem libva-nvidia-driver
-RUN sed -i -e 's/kernel-open$/kernel/g' /etc/nvidia/kernel.conf
-RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
 
 RUN dnf install -y waydroid scx-scheds
 
