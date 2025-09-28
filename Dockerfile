@@ -28,9 +28,6 @@ RUN dnf remove -y plocate
 # Install Mullvad VPN client
 RUN rpm -Uvh --nodeps https://mullvad.net/da/download/app/rpm/latest
 
-# Install Portmaster
-RUN dnf install -y https://updates.safing.io/latest/linux_amd64/packages/Portmaster-2.0.25-1.x86_64.rpm
-
 # Add rule to SELinux allowing modules to be loaded into custom kernel
 RUN setsebool -P domain_kernel_load_modules on
 
