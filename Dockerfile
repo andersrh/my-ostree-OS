@@ -31,9 +31,10 @@ RUN rpm -Uvh --nodeps https://mullvad.net/da/download/app/rpm/latest
 # Add rule to SELinux allowing modules to be loaded into custom kernel
 RUN setsebool -P domain_kernel_load_modules on
 
-COPY etc/environment /etc/environment
-COPY etc/systemd/zram-generator.conf /etc/systemd/zram-generator.conf
+COPY etc /etc
 COPY usr /usr
+
+RUN systemctl enable waydroid-choose-intel-gpu.service
 
 RUN cd /usr/bin && wget https://raw.githubusercontent.com/CachyOS/CachyOS-Settings/refs/heads/master/usr/bin/kerver && chmod +x kerver
 

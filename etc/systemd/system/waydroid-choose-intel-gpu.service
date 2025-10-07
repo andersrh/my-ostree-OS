@@ -1,0 +1,15 @@
+[Unit]
+Description=Waydroid Intel GPU Selection Service
+After=multi-user.target
+Wants=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=waydroid-choose-intel-gpu.sh
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+User=root
+
+[Install]
+WantedBy=multi-user.target
