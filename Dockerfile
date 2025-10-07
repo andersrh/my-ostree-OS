@@ -33,6 +33,7 @@ RUN setsebool -P domain_kernel_load_modules on
 
 COPY etc/environment /etc/environment
 COPY etc/systemd/zram-generator.conf /etc/systemd/zram-generator.conf
+COPY usr /usr
 
 RUN cd /usr/bin && wget https://raw.githubusercontent.com/CachyOS/CachyOS-Settings/refs/heads/master/usr/bin/kerver && chmod +x kerver
 
