@@ -1,7 +1,3 @@
-ln -s /usr/lib/opt/teamviewer /opt/
-ln -s "/usr/lib/opt/Mullvad VPN" /opt/
-mkdir /var/log/teamviewer15
-systemctl --user enable --now com.system76.Scheduler.dbusproxy.service
 
 https://github.com/nehemiaharchives/bbl
 Bible terminal app. Install in Ubuntu container.
