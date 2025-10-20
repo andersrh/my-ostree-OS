@@ -1,11 +1,11 @@
 FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 
 
-ARG KERNEL=kernel-cachyos-lto-skylake-test-616
+ARG KERNEL=kernel-cachyos-lts-lto-skylake
 ENV KERNEL=${KERNEL}
 
 # Get list of kernels from my repo. If the list has been updated, then the image will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
-ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel-cachyos-lto-skylake-test-616" /tmp/builds.txt
+ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel-cachyos-lts-lto-skylake" /tmp/builds.txt
 
 COPY repo/*.repo /etc/yum.repos.d/
 
