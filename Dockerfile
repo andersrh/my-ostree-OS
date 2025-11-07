@@ -1,17 +1,9 @@
 FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 
-
-ARG KERNEL=kernel-cachyos-lts-lto-skylake
-ENV KERNEL=${KERNEL}
-
 # Get list of kernels from my repo. If the list has been updated, then the image will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
-ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel-cachyos-lts-lto-skylake" /tmp/builds.txt
+ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel" /tmp/builds.txt
 
 COPY repo/*.repo /etc/yum.repos.d/
-
-RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
-
-RUN dnf remove -y kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-tools kernel-tools-libs
 
 RUN dnf upgrade -y
 
