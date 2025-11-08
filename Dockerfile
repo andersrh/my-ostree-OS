@@ -4,6 +4,7 @@ FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel" /tmp/builds.txt
 
 COPY repo/*.repo /etc/yum.repos.d/
+RUN dnf copr enable bieszczaders/kernel-cachyos-addons -y
 
 RUN dnf upgrade -y
 
