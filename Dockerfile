@@ -7,7 +7,7 @@ COPY repo/*.repo /etc/yum.repos.d/
 
 RUN dnf upgrade -y
 
-RUN dnf install $( \
+RUN dnf install -y $( \
                                                                               dnf list --available kernel\* --disablerepo='*' --enablerepo=my-ostree-os-rhel-epel 2>/dev/null \
                                                                               | grep 'andersdsrhcustom' \
                                                                               | awk '{print $1 "-" $2}' \
