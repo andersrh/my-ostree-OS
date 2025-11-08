@@ -7,6 +7,15 @@ COPY repo/*.repo /etc/yum.repos.d/
 
 RUN dnf upgrade -y
 
+RUN dnf install $( \
+                                                                              dnf list --available kernel\* --disablerepo='*' --enablerepo=my-ostree-os-rhel-epel 2>/dev/null \
+                                                                              | grep 'andersdsrhcustom' \
+                                                                              | awk '{print $1 "-" $2}' \
+                                                                              | sort -V \
+                                                                              | tail -1 \
+                                                                              | sed 's/\.src//g' \
+                                                                  )
+
 RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
 
 RUN dnf install -y fish distrobox nvtop intel-media-driver libva-intel-driver
