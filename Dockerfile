@@ -27,6 +27,12 @@ RUN dnf remove -y plocate
 # Install Mullvad VPN client
 RUN rpm -Uvh --nodeps https://mullvad.net/da/download/app/rpm/latest
 
+# Install libheif-freeworld to show thumbnails in Dolphin
+RUN dnf install libheif-freeworld -y
+
+# Install proprietary codecs
+RUN dnf swap libavcodec-free libavcodec-freeworld --allowerasing -y
+
 # Add rule to SELinux allowing modules to be loaded into custom kernel
 RUN setsebool -P domain_kernel_load_modules on
 
