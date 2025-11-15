@@ -12,6 +12,7 @@ RUN dnf install -y $( \
                                                                               | sort -V \
                                                                               | tail -1 \
                                                                               | sed 's/\.src//g' \
+                                                                              | sed 's/\.x86_64//g' \
                                                                   )
 
 RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
