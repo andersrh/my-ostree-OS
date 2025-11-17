@@ -45,6 +45,10 @@ RUN dnf swap libavcodec-free libavcodec-freeworld --allowerasing -y
 # Add rule to SELinux allowing modules to be loaded into custom kernel
 RUN setsebool -P domain_kernel_load_modules on
 
+RUN dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+RUN dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+RUN systemctl enable docker
+
 COPY etc /etc
 COPY usr /usr
 
