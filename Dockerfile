@@ -1,5 +1,9 @@
 FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 ARG CACHEBUST=1
+
+# Install some basic apps
+RUN dnf -y install chromium gwenview haruna
+
 # Get list of kernels from my repo. If the list has been updated, then the image will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
 ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel" /tmp/builds.txt
 
