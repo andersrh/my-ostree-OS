@@ -1,13 +1,13 @@
 FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 ARG CACHEBUST=1
 
-# Install some basic apps
-RUN dnf -y install chromium gwenview haruna
-
 # Get list of kernels from my repo. If the list has been updated, then the image will be rebuilt. If it hasn't been updated, then caching of the previous build will be used.
 ADD "https://copr.fedorainfracloud.org/api_3/build/list?ownername=andersrh&projectname=my-ostree-os&packagename=kernel" /tmp/builds.txt
 
 RUN echo 'omit_drivers+=" nouveau "' | tee /etc/dracut.conf.d/blacklist-nouveau.conf
+
+COPY bin/set_next_version.sh /tmp
+RUN /tmp/set_next_version.sh
 
 COPY repo/*.repo /etc/yum.repos.d/
 RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia.repo -y
@@ -45,6 +45,9 @@ RUN dnf install libheif-freeworld -y
 
 # Install proprietary codecs
 RUN dnf swap libavcodec-free libavcodec-freeworld --allowerasing -y
+
+RUN dnf -y install gwenview haruna kalk okular
+RUN dnf -y --enablerepo=epel-next-minor install chromium
 
 # Add rule to SELinux allowing modules to be loaded into custom kernel
 RUN setsebool -P domain_kernel_load_modules on
