@@ -48,6 +48,8 @@ RUN dnf swap libavcodec-free libavcodec-freeworld --allowerasing -y
 
 RUN dnf -y install gwenview haruna kalk okular
 RUN dnf -y --enablerepo=epel-next-minor install chromium
+# Delete default Chromium config so it can be replaced by my own
+RUN rm -f /etc/chromium/chromium.conf
 
 # Add rule to SELinux allowing modules to be loaded into custom kernel
 RUN setsebool -P domain_kernel_load_modules on
