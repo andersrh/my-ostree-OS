@@ -47,7 +47,7 @@ RUN dnf install libheif-freeworld -y
 RUN dnf swap libavcodec-free libavcodec-freeworld --allowerasing -y
 
 RUN dnf -y install gwenview haruna kalk okular
-RUN dnf -y --enablerepo=epel-next-minor install chromium
+RUN dnf -y install chromium
 # Delete default Chromium config so it can be replaced by my own
 RUN rm -f /etc/chromium/chromium.conf
 
