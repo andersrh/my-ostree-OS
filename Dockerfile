@@ -56,7 +56,7 @@ RUN setsebool -P domain_kernel_load_modules on
 RUN dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
 RUN dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
-RUN dnf install firefox -y
+RUN dnf install firefox thunderbird -y
 
 RUN rm -f /usr/lib64/libopenh264.so.2.4.1 /usr/lib64/libopenh264.so.7
 RUN rpm -Uvh --nodeps https://codecs.fedoraproject.org/openh264/42/x86_64/Packages/o/openh264-2.5.1-1.fc42.x86_64.rpm https://codecs.fedoraproject.org/openh264/42/x86_64/Packages/m/mozilla-openh264-2.5.1-1.fc42.x86_64.rpm
