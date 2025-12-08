@@ -10,7 +10,7 @@ COPY bin/set_next_version.sh /tmp
 RUN /tmp/set_next_version.sh
 
 COPY repo/*.repo /etc/yum.repos.d/
-RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia.repo -y
+RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia-580.repo -y
 
 RUN dnf install -y $( \
                                                                               dnf list --available kernel\* --disablerepo='*' --enablerepo=my-ostree-os-rhel-epel 2>/dev/null \
@@ -29,7 +29,6 @@ RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/down
 
 # Install Negativo17 Nvidia driver
 RUN dnf install -y dkms-nvidia nvidia-driver nvidia-persistenced opencl-filesystem libva-nvidia-driver kernel-devel-matched
-RUN sed -i -e 's/kernel-open$/kernel/g' /etc/nvidia/kernel.conf
 RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel)
 
 RUN dnf install -y waydroid scx-scheds
