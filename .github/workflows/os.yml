@@ -10,10 +10,11 @@ on:
       - 'usr/**'
       - 'repo/**'
       - '.github/workflows/os.yml'
-  workflow_dispatch: # Gør det muligt at starte den manuelt til test
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
+  # Vi tvinger navnet til lowercase her for en sikkerheds skyld
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
@@ -37,52 +38,57 @@ jobs:
         run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@v4 # Opdateret til v4
+        uses: actions/checkout@v4
 
-      - name: Install cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@v3.3.0 # Opdateret version
-        with:
-          cosign-release: 'v2.2.2'
-
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@v3 # Opdateret til v3
-        with:
-          # Vigtigt: Aktiverer experimental support i BuildKit
-          buildkitd-flags: --allow-insecure-entitlement security.insecure
-
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3 # Opdateret til v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
+      # Vi bruger stadig metadata-action til at generere alle vores tags (inkl. branch)
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          # Her tvinger vi tags til at være lowercase og definerer dine versioner
           tags: |
-            type=raw,value=latest
+            type=ref,event=branch
+            type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=10
             type=raw,value=10.${{ steps.date.outputs.date }}
 
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          # Erstat 'squash: true' med denne linje:
-          outputs: type=image,name=target,squash=true
+      # Buildah Login
+      - name: Log into GHCR
+        if: github.event_name != 'pull_request'
+        run: |
+          buildah login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ${{ env.REGISTRY }}
 
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+      # Build med Buildah (Squash er indbygget her)
+      - name: Build image with Buildah
+        id: build-image
+        run: |
+          # Vi tager det første tag fra meta-action som primært build-navn
+          PRIMARY_TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n 1)
+
+          buildah bud \
+            --squash \
+            --format docker \
+            --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
+            -t "$PRIMARY_TAG" .
+
+          echo "primary_tag=$PRIMARY_TAG" >> $GITHUB_OUTPUT
+
+      # Push alle tags med Buildah
+      - name: Push to GHCR
+        if: github.event_name != 'pull_request'
+        run: |
+          # Loop igennem alle de tags, som metadata-action genererede
+          for tag in $(echo "${{ steps.meta.outputs.tags }}"); do
+            echo "Pushing tag: $tag"
+            buildah push "$tag"
+          done
+
+      # Cosign (valgfrit - her bruger vi det primære tag til signering)
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@v3.3.0
+
+      - name: Sign image
+        if: github.event_name != 'pull_request'
+        run: |
+          cosign sign --yes ${{ steps.build-image.outputs.primary_tag }}
