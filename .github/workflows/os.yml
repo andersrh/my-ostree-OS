@@ -14,7 +14,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # Vi tvinger navnet til lowercase her for en sikkerheds skyld
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
@@ -27,11 +26,15 @@ jobs:
 
     steps:
       - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v1
+        uses: easimon/maximize-build-space@master
         with:
+          root-reserve-mb: 512
+          swap-size-mb: 1024
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
 
       - name: Get current date
         id: date
@@ -40,7 +43,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Vi bruger stadig metadata-action til at generere alle vores tags (inkl. branch)
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -52,36 +54,34 @@ jobs:
             type=raw,value=10
             type=raw,value=10.${{ steps.date.outputs.date }}
 
-      # Buildah Login
       - name: Log into GHCR
         if: github.event_name != 'pull_request'
         run: |
           buildah login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ${{ env.REGISTRY }}
 
-      # Build med Buildah (Squash er indbygget her)
       - name: Build image with Buildah
         id: build-image
         run: |
-          # Vi tager det første tag fra meta-action som primært build-navn
-          PRIMARY_TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n 1)
-
+          # Vi bygger med et fast navn 'raw-img' lokalt
           buildah bud \
             --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
-            -t "$PRIMARY_TAG" .
+            -t raw-img .
 
+          # Vi gemmer det første rigtige tag til senere brug (fx signering)
+          PRIMARY_TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n 1)
           echo "primary_tag=$PRIMARY_TAG" >> $GITHUB_OUTPUT
 
-      # Push alle tags med Buildah
       - name: Push to GHCR
         if: github.event_name != 'pull_request'
         run: |
           # Loop igennem alle de tags, som metadata-action genererede
           for tag in $(echo "${{ steps.meta.outputs.tags }}"); do
-            echo "Pushing tag: $tag"
+            echo "Tagging and pushing: $tag"
+            # VI TILFØJER DETTE TRIN: Giv raw-img det rigtige navn før push
+            buildah tag raw-img "$tag"
             buildah push "$tag"
           done
 
-      # Cosign (valgfrit - her bruger vi det primære tag til signering)
       - name: Install cosign
         if: github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@v3.3.0
@@ -89,4 +89,6 @@ jobs:
       - name: Sign image
         if: github.event_name != 'pull_request'
         run: |
-          cosign sign --yes ${{ steps.build-image.outputs.primary_tag }}
+          # Vi skal bruge buildah tag igen her for at sikre at PRIMARY_TAG findes lokalt
+          buildah tag raw-img "${{ steps.build-image.outputs.primary_tag }}"
+          cosign sign --yes "${{ steps.build-image.outputs.primary_tag }}"
