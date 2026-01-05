@@ -61,22 +61,23 @@ jobs:
 
       - name: Extract Docker metadata
         id: meta
-        uses: docker/metadata-action@v5 # Opdateret til v5
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # Her tvinger vi tags til at være lowercase og definerer dine versioner
+          tags: |
+            type=raw,value=latest
+            type=raw,value=10
+            type=raw,value=10.${{ steps.date.outputs.date }}
 
       - name: Build and push Docker image
         id: build-and-push
-        uses: docker/build-push-action@v5 # Opdateret til v5
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ${{ steps.meta.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:10
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:10.${{ steps.date.outputs.date }}
-          # Da caching alligevel ikke virkede, har jeg fjernet cache-to/from
-          # Det gør buildet mere rent, når vi bruger squash
+          # Nu bruger vi udelukkende tags fra meta-trinnet, som er lowercase-sikre
+          tags: ${{ steps.meta.outputs.tags }}
           squash: true
 
       - name: Sign the published Docker image
