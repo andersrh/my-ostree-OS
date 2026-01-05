@@ -66,8 +66,6 @@ jobs:
           PRIMARY_TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n 1)
 
           buildah bud \
-            --squash \
-            --format docker \
             --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
             -t "$PRIMARY_TAG" .
 
