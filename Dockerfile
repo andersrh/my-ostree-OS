@@ -61,6 +61,9 @@ RUN dnf install firefox thunderbird -y
 RUN rm -f /usr/lib64/libopenh264.so.2.4.1 /usr/lib64/libopenh264.so.7
 RUN rpm -Uvh --nodeps https://codecs.fedoraproject.org/openh264/42/x86_64/Packages/o/openh264-2.5.1-1.fc42.x86_64.rpm https://codecs.fedoraproject.org/openh264/42/x86_64/Packages/m/mozilla-openh264-2.5.1-1.fc42.x86_64.rpm
 
+# Install Aptx codec for pipewire
+RUN dnf install -y https://download1.rpmfusion.org/free/fedora/releases/42/Everything/x86_64/os/Packages/p/pipewire-codec-aptx-1.4.1-1.fc42.x86_64.rpm https://download1.rpmfusion.org/free/fedora/releases/42/Everything/x86_64/os/Packages/l/libfreeaptx-0.2.2-1.fc42.x86_64.rpm
+
 RUN systemctl enable docker
 
 COPY etc /etc
