@@ -76,9 +76,9 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          # Nu bruger vi udelukkende tags fra meta-trinnet, som er lowercase-sikre
           tags: ${{ steps.meta.outputs.tags }}
-          squash: true
+          # Erstat 'squash: true' med denne linje:
+          outputs: type=image,name=target,squash=true
 
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
