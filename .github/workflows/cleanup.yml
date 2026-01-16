@@ -1,0 +1,24 @@
+name: Ryd op i GHCR
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Kører hver søndag ved midnat
+  workflow_dispatch: # Gør det muligt at køre den manuelt
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  delete-old-images:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Slet gamle versioner
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} # Skift til dit image navn
+          package-type: 'container'
+          min-versions-to-keep: 5
+          delete-only-untagged-versions: 'false'
