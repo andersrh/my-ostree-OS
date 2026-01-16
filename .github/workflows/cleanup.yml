@@ -20,5 +20,5 @@ jobs:
         with:
           package-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} # Skift til dit image navn
           package-type: 'container'
-          min-versions-to-keep: 5
+          min-versions-to-keep: 50
           delete-only-untagged-versions: 'false'
