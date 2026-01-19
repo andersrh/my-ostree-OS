@@ -2,7 +2,7 @@ name: Ryd op i GHCR
 
 on:
   schedule:
-    - cron: '0 * * * *' # Kører hver time
+    - cron: '0 0 * * 0' # Kører hver søndag ved midnat
   workflow_dispatch: # Gør det muligt at køre den manuelt
 
 jobs:
