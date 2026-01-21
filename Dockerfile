@@ -9,7 +9,7 @@ COPY repo/*.repo /etc/yum.repos.d/
 RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia-580.repo -y
 
 RUN dnf install -y $( \
-                                                                              dnf list --available kernel\* --disablerepo='*' --enablerepo=my-ostree-os-rhel-epel 2>/dev/null \
+                                                                              dnf list --available kernel\* --disablerepo='*' --enablerepo=my-ostree-os-rhel-epel,my-ostree-os-epel 2>/dev/null \
                                                                               | grep 'andersdsrhcustom' \
                                                                               | awk '{print $1 "-" $2}' \
                                                                               | sort -V \
