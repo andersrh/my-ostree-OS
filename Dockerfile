@@ -57,7 +57,7 @@ RUN dnf install -y https://github.com/Alex313031/thorium/releases/download/M138.
 RUN dnf copr enable yselkowitz/xfce-epel -y
 RUN dnf copr enable andersrh/xlibre-xserver -y
 
-RUN dnf install xlibre-server-Xorg xfdesktop xfce4-*  --exclude="xfce4-session-wayland-session" -y
+RUN dnf install xlibre-xserver-Xorg xfdesktop xfce4-*  --exclude="xfce4-session-wayland-session" -y
 
 RUN systemctl enable docker
 
