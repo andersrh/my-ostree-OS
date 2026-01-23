@@ -61,6 +61,11 @@ RUN rpm -Uvh --nodeps https://codecs.fedoraproject.org/openh264/42/x86_64/Packag
 # Install Thorium
 RUN dnf install -y https://github.com/Alex313031/thorium/releases/download/M138.0.7204.300/thorium-browser_138.0.7204.300_AVX2.rpm
 
+RUN dnf copr enable yselkowitz/xfce-epel -y
+RUN dnf copr enable andersrh/xlibre-xserver -y
+
+RUN dnf install xlibre-server-Xorg xfdesktop xfce4-*  --exclude="xfce4-session-wayland-session"
+
 RUN systemctl enable docker
 
 COPY etc /etc
