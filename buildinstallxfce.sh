@@ -2,8 +2,6 @@
 
 export PKG_CONFIG_PATH="/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-ls -la ./
-
 for f in *.tar.bz2; do tar -xjf "$f"; done
 
 cd xfce4-dev-tools-4.20.0
@@ -37,6 +35,9 @@ cd ../xfce4-session-4.20.0
 ./configure --prefix=/usr && make && make install
 
 cd ../xfce4-settings-4.20.0
+./configure --prefix=/usr && make && make install
+
+cd ../xfwm4-4.20.0/
 ./configure --prefix=/usr && make && make install
 
 cd ../xfdesktop-4.20.0
