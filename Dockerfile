@@ -56,8 +56,23 @@ RUN dnf install -y https://github.com/Alex313031/thorium/releases/download/M138.
 
 RUN dnf copr enable yselkowitz/xfce-epel -y
 RUN dnf copr enable andersrh/xlibre-xserver -y
+RUN dnf copr enable andersrh/xlibre-xserver-21 -y
 
-RUN dnf install xlibre-xserver-Xorg xfdesktop xfce4-*  --exclude="xfce4-session-wayland-session" -y
+RUN dnf install xlibre-xserver-Xorg meson gcc cmake libX11-devel libXext-devel libXft-devel libXinerama-devel xorg-x11-proto-devel libxshmfence-devel libxkbfile-devel libbsd-devel libXfont2-devel xkbcomp libfontenc-devel libXres-devel libXdmcp-devel dbus-devel systemd-devel libudev-devel libxcvt-devel libdrm-devel libXv-devel libseat-devel libXv-devel xkbcomp xkeyboard-config-devel mesa-libGL-devel mesa-libEGL-devel libepoxy-devel mesa-libgbm-devel libdrm-devel xcb-util-devel  xcb-util-image-devel  xcb-util-keysyms-devel  xcb-util-wm-devel  xcb-util-renderutil-devel openssl-devel libXau-devel libXdmcp-devel libSM-devel libICE-devel startup-notification-devel libgtop2-devel libepoxy-devel libgudev-devel libwnck3-devel.x86_64 libdisplay-info-devel.x86_64 libnotify-devel.x86_64 upower-devel.x86_64 iceauth libICE-devel libSM-devel libXpresent-devel libyaml-devel vte291-devel gtk3-devel -y
+
+RUN mkdir /tmp/xfce
+WORKDIR /tmp/xfce
+
+ADD https://archive.xfce.org/xfce/4.20/fat_tarballs/xfce-4.20.tar.bz2 ./
+
+RUN tar -xjf xfce-4.20.tar.bz2
+
+RUN ls -la && sleep 10s
+
+WORKDIR /tmp/xfce/src
+
+COPY buildinstallxfce.sh ./
+RUN chmod +x buildinstallxfce.sh && ./buildinstallxfce.sh
 
 RUN systemctl enable docker
 
@@ -68,5 +83,8 @@ RUN systemctl enable waydroid-choose-intel-gpu.service
 
 RUN cd /usr/bin && wget https://raw.githubusercontent.com/CachyOS/CachyOS-Settings/refs/heads/master/usr/bin/kerver && chmod +x kerver
 
-RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+
+RUN cp -R /usr/etc/* /etc/
+
+RUN rm -rf /tmp/* /var/* /usr/etc && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
 bootc container lint
