@@ -37,6 +37,9 @@ cd ../xfce4-session-4.20.0
 cd ../xfce4-settings-4.20.0
 ./configure --prefix=/usr && make && make install
 
+cd ../xfce4-panel-4.20.0
+./configure --prefix=/usr && make && make install
+
 cd ../xfwm4-4.20.0/
 ./configure --prefix=/usr && make && make install
 
