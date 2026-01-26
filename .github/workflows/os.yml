@@ -10,6 +10,7 @@ on:
       - 'usr/**'
       - 'repo/**'
       - '.github/workflows/os.yml'
+      - 'buildinstallxfce.sh'
   workflow_dispatch:
 
 env:
