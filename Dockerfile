@@ -75,8 +75,10 @@ COPY buildinstallxfce.sh ./
 RUN chmod +x buildinstallxfce.sh && ./buildinstallxfce.sh
 
 ADD https://archive.xfce.org/src/apps/xfce4-mixer/4.20/xfce4-mixer-4.20.0.tar.xz ./
+ADD https://archive.xfce.org/src/apps/xfce4-notifyd/0.9/xfce4-notifyd-0.9.7.tar.bz2 ./
+ADD https://archive.xfce.org/src/panel-plugins/xfce4-clipman-plugin/1.7/xfce4-clipman-plugin-1.7.0.tar.xz ./
 
-RUN dnf install libtool gettext-devel gstreamer1-devel -y
+RUN dnf install libtool gettext-devel gstreamer1-devel sqlite-devel -y
 
 COPY buildinstallxfceaddons.sh ./
 RUN chmod +x buildinstallxfceaddons.sh && ./buildinstallxfceaddons.sh
