@@ -79,7 +79,7 @@ ADD https://archive.xfce.org/src/apps/xfce4-notifyd/0.9/xfce4-notifyd-0.9.7.tar.
 ADD https://archive.xfce.org/src/panel-plugins/xfce4-clipman-plugin/1.7/xfce4-clipman-plugin-1.7.0.tar.xz ./
 ADD https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/0.5/xfce4-pulseaudio-plugin-0.5.1.tar.xz ./
 
-RUN dnf install libtool gettext-devel gstreamer1-devel sqlite-devel pavucontrol pulseaudio-libs-devel -y
+RUN dnf install libtool gettext-devel gstreamer1-devel sqlite-devel pavucontrol pulseaudio-libs-devel weston -y
 
 COPY buildinstallxfceaddons.sh ./
 RUN chmod +x buildinstallxfceaddons.sh && ./buildinstallxfceaddons.sh
