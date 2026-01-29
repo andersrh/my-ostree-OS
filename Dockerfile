@@ -83,6 +83,9 @@ ADD https://archive.xfce.org/src/apps/xfce4-screensaver/4.20/xfce4-screensaver-4
 COPY buildinstallxfceaddons.sh ./
 RUN chmod +x buildinstallxfceaddons.sh && ./buildinstallxfceaddons.sh
 
+RUN dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/kernel-cachyos-addons/fedora-41-x86_64/08314945-ananicy-cpp/ananicy-cpp-1.1.1-11.fc41.x86_64.rpm --transient \
+&& systemctl disable ananicy-cpp
+
 RUN systemctl enable docker
 
 COPY etc /etc
