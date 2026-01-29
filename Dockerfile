@@ -57,9 +57,8 @@ RUN dnf install -y https://github.com/Alex313031/thorium/releases/download/M138.
 RUN dnf copr enable yselkowitz/xfce-epel -y
 RUN dnf copr enable andersrh/xlibre-xserver -y
 
-RUN dnf install xlibre-xserver-Xorg xlibre-xserver-devel meson gcc cmake libX11-devel libXext-devel libXft-devel libXinerama-devel xorg-x11-proto-devel libxshmfence-devel libxkbfile-devel libbsd-devel libXfont2-devel xkbcomp libfontenc-devel libXres-devel libXdmcp-devel dbus-devel systemd-devel libudev-devel libxcvt-devel libdrm-devel libXv-devel libseat-devel libXv-devel xkbcomp xkeyboard-config-devel mesa-libGL-devel mesa-libEGL-devel libepoxy-devel mesa-libgbm-devel libdrm-devel xcb-util-devel  xcb-util-image-devel  xcb-util-keysyms-devel  xcb-util-wm-devel  xcb-util-renderutil-devel openssl-devel libXau-devel libXdmcp-devel libSM-devel libICE-devel startup-notification-devel libgtop2-devel libepoxy-devel libgudev-devel libwnck3-devel.x86_64 libdisplay-info-devel.x86_64 libnotify-devel.x86_64 upower-devel.x86_64 iceauth libICE-devel libSM-devel libXpresent-devel libyaml-devel vte291-devel gtk3-devel xorg-x11-xinit xlibre-xf86-input-libinput-devel xlibre-xf86-input-libinput -y
-
-RUN dnf install network-manager-applet redshift -y --refresh
+RUN dnf install xlibre-xserver-Xorg xlibre-xserver-devel meson gcc cmake libX11-devel libXext-devel libXft-devel libXinerama-devel xorg-x11-proto-devel libxshmfence-devel libxkbfile-devel libbsd-devel libXfont2-devel xkbcomp libfontenc-devel libXres-devel libXdmcp-devel dbus-devel systemd-devel libudev-devel libxcvt-devel libdrm-devel libXv-devel libseat-devel libXv-devel xkbcomp xkeyboard-config-devel mesa-libGL-devel mesa-libEGL-devel libepoxy-devel mesa-libgbm-devel libdrm-devel xcb-util-devel  xcb-util-image-devel  xcb-util-keysyms-devel  xcb-util-wm-devel  xcb-util-renderutil-devel openssl-devel libXau-devel libXdmcp-devel libSM-devel libICE-devel startup-notification-devel libgtop2-devel libepoxy-devel libgudev-devel libwnck3-devel.x86_64 libdisplay-info-devel.x86_64 libnotify-devel.x86_64 upower-devel.x86_64 iceauth libICE-devel libSM-devel libXpresent-devel libyaml-devel vte291-devel gtk3-devel xorg-x11-xinit xlibre-xf86-input-libinput-devel xlibre-xf86-input-libinput \
+libXScrnSaver-devel libxklavier-devel pam-devel gcc-c++ dbus-glib-devel libtool gettext-devel gstreamer1-devel sqlite-devel pavucontrol pulseaudio-libs-devel weston cage network-manager-applet redshift -y
 
 RUN mkdir /tmp/xfce
 WORKDIR /tmp/xfce
@@ -78,9 +77,8 @@ ADD https://archive.xfce.org/src/apps/xfce4-notifyd/0.9/xfce4-notifyd-0.9.7.tar.
 ADD https://archive.xfce.org/src/panel-plugins/xfce4-clipman-plugin/1.7/xfce4-clipman-plugin-1.7.0.tar.xz ./
 ADD https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/0.5/xfce4-pulseaudio-plugin-0.5.1.tar.xz ./
 ADD https://archive.xfce.org/src/panel-plugins/xfce4-whiskermenu-plugin/2.10/xfce4-whiskermenu-plugin-2.10.0.tar.xz ./
-
-RUN dnf install libtool gettext-devel gstreamer1-devel sqlite-devel pavucontrol pulseaudio-libs-devel weston cage -y
-RUN dnf install gcc-c++ -y
+ADD https://archive.xfce.org/src/panel-plugins/xfce4-stopwatch-plugin/0.6/xfce4-stopwatch-plugin-0.6.0.tar.xz ./
+ADD https://archive.xfce.org/src/apps/xfce4-screensaver/4.20/xfce4-screensaver-4.20.1.tar.xz ./
 
 COPY buildinstallxfceaddons.sh ./
 RUN chmod +x buildinstallxfceaddons.sh && ./buildinstallxfceaddons.sh

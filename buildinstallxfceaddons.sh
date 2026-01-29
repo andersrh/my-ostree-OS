@@ -2,6 +2,20 @@
 
 export PKG_CONFIG_PATH="/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
 
+#tar -xf xfce4-screensaver-4.20.1.tar.xz
+#cd xfce4-screensaver-4.20.1
+#meson setup build
+#meson compile -C build
+#meson install -C build
+
+#cd ../
+
+tar -xf xfce4-stopwatch-plugin-0.6.0.tar.xz
+cd xfce4-stopwatch-plugin-0.6.0
+./autogen.sh --prefix=/usr && make && make install
+
+cd ../
+
 tar -xf xfce4-whiskermenu-plugin-2.10.0.tar.xz
 cd xfce4-whiskermenu-plugin-2.10.0
 meson setup build
