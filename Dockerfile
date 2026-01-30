@@ -84,7 +84,8 @@ COPY buildinstallxfceaddons.sh ./
 RUN chmod +x buildinstallxfceaddons.sh && ./buildinstallxfceaddons.sh
 
 RUN dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/kernel-cachyos-addons/fedora-41-x86_64/08314945-ananicy-cpp/ananicy-cpp-1.1.1-11.fc41.x86_64.rpm -y \
-&& systemctl disable ananicy-cpp
+&& systemctl disable ananicy-cpp \
+&& dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/kernel-cachyos-addons/fedora-42-x86_64/10036986-cachyos-ananicy-rules/cachyos-ananicy-rules-20260120.rc3e21cb-1.fc42.x86_64.rpm -y
 
 RUN systemctl enable docker
 
