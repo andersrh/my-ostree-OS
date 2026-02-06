@@ -91,6 +91,7 @@ RUN dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/
 && dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/kernel-cachyos-addons/fedora-42-x86_64/10036986-cachyos-ananicy-rules/cachyos-ananicy-rules-20260120.rc3e21cb-1.fc42.x86_64.rpm -y
 
 RUN systemctl enable docker
+RUN systemctl enable scx_loader
 
 COPY etc /etc
 COPY usr /usr
