@@ -35,7 +35,10 @@ RUN dnf install libheif-freeworld -y
 # Install proprietary codecs
 RUN dnf swap libavcodec-free libavcodec-freeworld --allowerasing -y
 
-RUN dnf -y install gwenview haruna kalk okular
+# Install HPLIP for HP printer support
+RUN dnf install hplip -y
+
+RUN dnf -y install gwenview kalk okular
 RUN dnf -y install chromium
 # Delete default Chromium config so it can be replaced by my own
 RUN rm -f /etc/chromium/chromium.conf
