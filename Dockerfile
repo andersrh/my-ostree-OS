@@ -1,5 +1,7 @@
 FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 
+RUN echo 'omit_drivers+=" nouveau "' | tee /etc/dracut.conf.d/blacklist-nouveau.conf
+
 COPY bin/set_next_version.sh /tmp
 RUN /tmp/set_next_version.sh
 
@@ -11,6 +13,9 @@ RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-
 RUN dnf install -y fish distrobox nvtop intel-media-driver libva-intel-driver htop
 RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm
 
+# Install Negativo17 Nvidia driver
+RUN dnf install -y dkms-nvidia nvidia-driver nvidia-persistenced opencl-filesystem libva-nvidia-driver kernel-devel-matched
+
 RUN dnf install -y $( \
                                                                               dnf list --available kernel\* --disablerepo='*' --enablerepo=my-ostree-os-rhel-epel,my-ostree-os-epel 2>/dev/null \
                                                                               | grep 'andersdsrhcustom' \
@@ -20,6 +25,8 @@ RUN dnf install -y $( \
                                                                               | sed 's/\.src//g' \
                                                                               | sed 's/\.x86_64//g' \
                                                                   )
+
+RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel)
 
 RUN dnf install -y waydroid scx-scheds
 
