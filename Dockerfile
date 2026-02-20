@@ -99,6 +99,9 @@ RUN dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/
 
 RUN dnf install xscreensaver -y
 
+# Install VLC
+RUN dnf install vlc vlc-plugins-freeworld vlc-plugin-pipewire -y
+
 RUN systemctl enable docker
 RUN systemctl enable scx_loader
 
