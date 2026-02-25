@@ -103,7 +103,7 @@ RUN dnf install xscreensaver -y
 RUN dnf install vlc vlc-plugins-freeworld vlc-plugin-pipewire -y
 
 RUN systemctl enable docker
-RUN systemctl disable scx_loader
+RUN systemctl enable scx_loader
 
 COPY etc /etc
 COPY usr /usr
