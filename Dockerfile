@@ -1,5 +1,8 @@
 FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 
+ARG KERNEL=kernel-cachyos-lto
+ENV KERNEL=${KERNEL}
+
 RUN echo 'omit_drivers+=" nouveau "' | tee /etc/dracut.conf.d/blacklist-nouveau.conf
 
 COPY bin/set_next_version.sh /tmp
@@ -13,20 +16,17 @@ RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-
 RUN dnf install -y fish distrobox nvtop intel-media-driver libva-intel-driver htop
 RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm
 
+# Enable CachyOS repositories
+RUN dnf copr enable bieszczaders/kernel-cachyos-lto -y && dnf copr enable bieszczaders/kernel-cachyos -y
+
+RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
+
+RUN dnf remove -y kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-tools kernel-tools-libs
+
 # Install Negativo17 Nvidia driver
-RUN dnf install -y dkms-nvidia nvidia-driver nvidia-persistenced opencl-filesystem libva-nvidia-driver kernel-devel-matched
+RUN dnf install -y dkms-nvidia nvidia-driver nvidia-persistenced opencl-filesystem libva-nvidia-driver
 
-RUN dnf install -y $( \
-                                                                              dnf list --available kernel\* --disablerepo='*' --enablerepo=my-ostree-os-rhel-epel,my-ostree-os-epel 2>/dev/null \
-                                                                              | grep 'andersdsrhcustom' \
-                                                                              | awk '{print $1 "-" $2}' \
-                                                                              | sort -V \
-                                                                              | tail -1 \
-                                                                              | sed 's/\.src//g' \
-                                                                              | sed 's/\.x86_64//g' \
-                                                                  )
-
-RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel)
+RUN dkms install nvidia/$(ls /usr/src/ | grep nvidia- | cut -d- -f2-) -k $(rpm -q --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}\n" ${KERNEL})
 
 RUN dnf install -y waydroid scx-scheds
 
@@ -68,7 +68,7 @@ RUN dnf copr enable yselkowitz/xfce-epel -y
 RUN cd /etc/yum.repos.d && wget https://copr.fedorainfracloud.org/coprs/g/xlibre/xlibre-xserver/repo/rhel+epel-10/group_xlibre-xlibre-xserver-rhel+epel-10.repo
 
 RUN dnf install xlibre-xserver-Xorg xlibre-xserver-devel meson gcc cmake libX11-devel libXext-devel libXft-devel libXinerama-devel xorg-x11-proto-devel libxshmfence-devel libxkbfile-devel libbsd-devel libXfont2-devel xkbcomp libfontenc-devel libXres-devel libXdmcp-devel dbus-devel systemd-devel libudev-devel libxcvt-devel libdrm-devel libXv-devel libseat-devel libXv-devel xkbcomp xkeyboard-config-devel mesa-libGL-devel mesa-libEGL-devel libepoxy-devel mesa-libgbm-devel libdrm-devel xcb-util-devel  xcb-util-image-devel  xcb-util-keysyms-devel  xcb-util-wm-devel  xcb-util-renderutil-devel openssl-devel libXau-devel libXdmcp-devel libSM-devel libICE-devel startup-notification-devel libgtop2-devel libepoxy-devel libgudev-devel libwnck3-devel.x86_64 libdisplay-info-devel.x86_64 libnotify-devel.x86_64 upower-devel.x86_64 iceauth libICE-devel libSM-devel libXpresent-devel libyaml-devel vte291-devel gtk3-devel xorg-x11-xinit xlibre-xf86-input-libinput-devel xlibre-xf86-input-libinput \
-libXScrnSaver-devel libxklavier-devel pam-devel gcc-c++ dbus-glib-devel libtool gettext-devel gstreamer1-devel sqlite-devel pavucontrol pulseaudio-libs-devel weston cage network-manager-applet redshift blueman -y
+    libXScrnSaver-devel libxklavier-devel pam-devel gcc-c++ dbus-glib-devel libtool gettext-devel gstreamer1-devel sqlite-devel pavucontrol pulseaudio-libs-devel weston cage network-manager-applet redshift blueman -y
 
 RUN mkdir /tmp/xfce
 WORKDIR /tmp/xfce
@@ -94,8 +94,8 @@ COPY buildinstallxfceaddons.sh ./
 RUN chmod +x buildinstallxfceaddons.sh && ./buildinstallxfceaddons.sh
 
 RUN dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/kernel-cachyos-addons/fedora-41-x86_64/08314945-ananicy-cpp/ananicy-cpp-1.1.1-11.fc41.x86_64.rpm -y \
-&& systemctl enable ananicy-cpp \
-&& dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/kernel-cachyos-addons/fedora-42-x86_64/10036986-cachyos-ananicy-rules/cachyos-ananicy-rules-20260120.rc3e21cb-1.fc42.x86_64.rpm -y
+    && systemctl enable ananicy-cpp \
+    && dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/kernel-cachyos-addons/fedora-42-x86_64/10036986-cachyos-ananicy-rules/cachyos-ananicy-rules-20260120.rc3e21cb-1.fc42.x86_64.rpm -y
 
 RUN dnf install xscreensaver -y
 
@@ -113,4 +113,4 @@ RUN systemctl enable waydroid-choose-intel-gpu.service
 RUN cd /usr/bin && wget https://raw.githubusercontent.com/CachyOS/CachyOS-Settings/refs/heads/master/usr/bin/kerver && chmod +x kerver
 
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
-bootc container lint
+    bootc container lint
