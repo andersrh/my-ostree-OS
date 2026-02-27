@@ -19,6 +19,8 @@ RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/down
 # Enable CachyOS repositories
 RUN dnf copr enable bieszczaders/kernel-cachyos -y
 
+RUN dnf copr enable bieszczaders/kernel-cachyos-dev -y
+
 RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
 
 RUN dnf remove -y kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-tools kernel-tools-libs
