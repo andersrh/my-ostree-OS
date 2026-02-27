@@ -1,6 +1,6 @@
 FROM quay.io/almalinuxorg/atomic-desktop-kde:10
 
-ARG KERNEL=kernel-cachyos-lto
+ARG KERNEL=kernel-cachyos
 ENV KERNEL=${KERNEL}
 
 RUN echo 'omit_drivers+=" nouveau "' | tee /etc/dracut.conf.d/blacklist-nouveau.conf
@@ -17,7 +17,7 @@ RUN dnf install -y fish distrobox nvtop intel-media-driver libva-intel-driver ht
 RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm
 
 # Enable CachyOS repositories
-RUN dnf copr enable bieszczaders/kernel-cachyos-lto -y && dnf copr enable bieszczaders/kernel-cachyos -y
+RUN dnf copr enable bieszczaders/kernel-cachyos -y
 
 RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
 
