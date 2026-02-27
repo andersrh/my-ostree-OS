@@ -19,6 +19,9 @@ RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/down
 # Enable CachyOS repositories
 RUN dnf copr enable bieszczaders/kernel-cachyos -y
 
+# Enable CachyOS addons EL10 fork repo
+RUN dnf copr enable andersrh/kernel-cachyos-addons-el10 -y
+
 RUN dnf install -y ${KERNEL} ${KERNEL}-devel-matched
 
 RUN dnf remove -y kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-tools kernel-tools-libs
@@ -62,7 +65,7 @@ RUN rm -f /usr/lib64/libopenh264.so.2.4.1 /usr/lib64/libopenh264.so.7
 RUN rpm -Uvh --nodeps https://codecs.fedoraproject.org/openh264/42/x86_64/Packages/o/openh264-2.5.1-1.fc42.x86_64.rpm https://codecs.fedoraproject.org/openh264/42/x86_64/Packages/m/mozilla-openh264-2.5.1-1.fc42.x86_64.rpm
 
 # Install Thorium
-RUN dnf install -y https://github.com/Alex313031/thorium/releases/download/M138.0.7204.300/thorium-browser_138.0.7204.300_AVX2.rpm
+RUN dnf install -y https://github.com/Alex313031/thorium/releases/download/M138.0.7204.303/thorium-browser_138.0.7204.303_AVX2.rpm
 
 RUN dnf copr enable yselkowitz/xfce-epel -y
 RUN cd /etc/yum.repos.d && wget https://copr.fedorainfracloud.org/coprs/g/xlibre/xlibre-xserver/repo/rhel+epel-10/group_xlibre-xlibre-xserver-rhel+epel-10.repo
@@ -95,7 +98,7 @@ RUN chmod +x buildinstallxfceaddons.sh && ./buildinstallxfceaddons.sh
 
 RUN dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/kernel-cachyos-addons/fedora-41-x86_64/08314945-ananicy-cpp/ananicy-cpp-1.1.1-11.fc41.x86_64.rpm -y \
     && systemctl enable ananicy-cpp \
-    && dnf install https://download.copr.fedorainfracloud.org/results/bieszczaders/kernel-cachyos-addons/fedora-42-x86_64/10036986-cachyos-ananicy-rules/cachyos-ananicy-rules-20260120.rc3e21cb-1.fc42.x86_64.rpm -y
+    && dnf install cachyos-ananicy-rules cachyos-settings -y
 
 RUN dnf install xscreensaver -y
 
