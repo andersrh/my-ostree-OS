@@ -13,6 +13,12 @@ RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia-580.r
 
 RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
 
+RUN dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/andersrh/sonicDE/repo/rhel+epel-10/andersrh-sonicDE-rhel+epel-10.repo -y
+RUN dnf copr enable yselkowitz/xfce-epel -y
+RUN dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/xlibre/xlibre-xserver/repo/rhel+epel-10/group_xlibre-xlibre-xserver-rhel+epel-10.repo -y
+
+RUN dnf install sonic-workspace-x11 sonic-win sonic-interface-libraries sonic-workspace --allowerasing -y
+
 RUN dnf install -y fish distrobox nvtop intel-media-driver libva-intel-driver htop
 RUN dnf install -y https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm
 
@@ -66,9 +72,6 @@ RUN rpm -Uvh --nodeps https://codecs.fedoraproject.org/openh264/42/x86_64/Packag
 
 # Install Thorium
 RUN dnf install -y https://github.com/Alex313031/thorium/releases/download/M138.0.7204.303/thorium-browser_138.0.7204.303_AVX2.rpm
-
-RUN dnf copr enable yselkowitz/xfce-epel -y
-RUN cd /etc/yum.repos.d && wget https://copr.fedorainfracloud.org/coprs/g/xlibre/xlibre-xserver/repo/rhel+epel-10/group_xlibre-xlibre-xserver-rhel+epel-10.repo
 
 RUN dnf install xlibre-xserver-Xorg xlibre-xserver-devel xinput meson gcc cmake libX11-devel libXext-devel libXft-devel libXinerama-devel xorg-x11-proto-devel libxshmfence-devel libxkbfile-devel libbsd-devel libXfont2-devel xkbcomp libfontenc-devel libXres-devel libXdmcp-devel dbus-devel systemd-devel libudev-devel libxcvt-devel libdrm-devel libXv-devel libseat-devel libXv-devel xkbcomp xkeyboard-config-devel mesa-libGL-devel mesa-libEGL-devel libepoxy-devel mesa-libgbm-devel libdrm-devel xcb-util-devel  xcb-util-image-devel  xcb-util-keysyms-devel  xcb-util-wm-devel  xcb-util-renderutil-devel openssl-devel libXau-devel libXdmcp-devel libSM-devel libICE-devel startup-notification-devel libgtop2-devel libepoxy-devel libgudev-devel libwnck3-devel.x86_64 libdisplay-info-devel.x86_64 libnotify-devel.x86_64 upower-devel.x86_64 iceauth libICE-devel libSM-devel libXpresent-devel libyaml-devel vte291-devel gtk3-devel xorg-x11-xinit xlibre-xf86-input-libinput-devel xlibre-xf86-input-libinput \
     libXScrnSaver-devel libxklavier-devel pam-devel gcc-c++ dbus-glib-devel libtool gettext-devel gstreamer1-devel sqlite-devel pavucontrol pulseaudio-libs-devel weston cage network-manager-applet redshift blueman -y
