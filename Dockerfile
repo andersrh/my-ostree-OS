@@ -83,6 +83,12 @@ RUN dnf install vlc vlc-plugins-freeworld vlc-plugin-pipewire -y
 RUN systemctl enable docker
 RUN systemctl enable scx_loader
 
+# Fix Nvidia resume from suspend. Solution: https://forums.developer.nvidia.com/t/fixed-suspend-resume-issues-with-the-driver-version-470/187150/3
+RUN systemctl disable nvidia-suspend.service
+RUN systemctl disable nvidia-hibernate.service
+RUN systemctl disable nvidia-resume.service
+RUN rm /lib/systemd/system-sleep/nvidia
+
 COPY etc /etc
 COPY usr /usr
 
