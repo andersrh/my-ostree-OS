@@ -16,6 +16,9 @@ RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-
 RUN dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/andersrh/sonicDE/repo/rhel+epel-10/andersrh-sonicDE-rhel+epel-10.repo -y
 RUN dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/xlibre/xlibre-xserver/repo/rhel+epel-10/group_xlibre-xlibre-xserver-rhel+epel-10.repo -y
 
+# This may be necessary for the speakers and internal microphone
+RUN dnf install -y alsa-sof-firmware
+
 RUN dnf install sonic-workspace-x11 sonic-win sonic-interface-libraries sonic-workspace --allowerasing -y
 
 RUN dnf install -y fish distrobox nvtop intel-media-driver libva-intel-driver htop
