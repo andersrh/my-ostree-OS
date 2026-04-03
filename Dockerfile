@@ -9,7 +9,7 @@ COPY bin/set_next_version.sh /tmp
 RUN /tmp/set_next_version.sh
 
 COPY repo/*.repo /etc/yum.repos.d/
-RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia-580.repo -y
+RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-nvidia.repo -y
 
 RUN dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
 
