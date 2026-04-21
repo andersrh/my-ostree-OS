@@ -72,9 +72,6 @@ RUN dnf install firefox thunderbird -y
 RUN rm -f /usr/lib64/libopenh264.so.2.4.1 /usr/lib64/libopenh264.so.7
 RUN rpm -Uvh --nodeps https://codecs.fedoraproject.org/openh264/42/x86_64/Packages/o/openh264-2.5.1-1.fc42.x86_64.rpm https://codecs.fedoraproject.org/openh264/42/x86_64/Packages/m/mozilla-openh264-2.5.1-1.fc42.x86_64.rpm
 
-# Install Thorium
-RUN dnf install -y https://github.com/Alex313031/thorium/releases/download/M138.0.7204.303/thorium-browser_138.0.7204.303_AVX2.rpm
-
 RUN dnf install xorg-x11-xinit xkbcomp xinput xlibre-xserver-Xorg xlibre-xf86-input-libinput cage weston redshift -y
 
 RUN dnf install ananicy-cpp cachyos-ananicy-rules cachyos-settings -y \
@@ -82,6 +79,10 @@ RUN dnf install ananicy-cpp cachyos-ananicy-rules cachyos-settings -y \
 
 # Install VLC
 RUN dnf install vlc vlc-plugins-freeworld vlc-plugin-pipewire -y
+
+# Install Brave browser
+RUN dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo -y
+RUN dnf install brave-browser -y
 
 RUN systemctl enable docker
 RUN systemctl enable scx_loader
